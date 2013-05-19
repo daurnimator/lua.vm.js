@@ -56,33 +56,38 @@
       <div class="row-fluid">
         <div class="span">
           <h3>Score: <b>waka</b></h3>
+            <table class="table table-striped table-bordered table-hover">
+              <thead>
+                <tr>
+                  <th>Benchmark</th>
+                  <th>Result</th>
+                  <th>Scale</th>
+                  <th>Description</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>binarytrees</td>
+                  <td></td>
+                  <td>seconds (lower numbers are better)</td>
+                  <td>measures GC performance</td>
+                </tr>
+                <tr>
+                  <td>scimark</td>
+                  <td></td>
+                  <td>MFLOPS (higher numbers are better)</td>
+                  <td>measures numeric computation performance</td>
+                </tr>
+              </tbody>
+            </table>
+        </div>
+      </div>
 
-<table class="table table-striped table-bordered table-hover">
-    <thead>
-        <tr>
-            <th>#</th>
-            <th>First Name</th>
-            <th>Last Name</th>
-            <th>Language</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td>1</td>
-            <td>Some</td>
-            <td>One</td>
-            <td>English</td>
-        </tr>
-        <tr>
-            <td>2</td>
-            <td>Joe</td>
-            <td>Sixpack</td>
-            <td>English</td>
-        </tr>
-    </tbody>
-</table>
-
+      <div class="row-fluid">
+        <div class="span">
+          <h3>Notes</h3>
           <p>For comparison, you can grab <a href="http://www.lua.org/download.html">Lua 5.2.2</a> (the version compiled here to JavaScript), build it natively, and run the same benchmarks (<a href="binarytrees.lua">binarytrees</a>, <a href="scimark.lua">scimark</a>). To run them, execute <code>lua scimark.lua</code> and <code>lua binarytrees.lua 14.72</code> (don't forget the second argument in binarytrees).</p>
+          <p>To reproduce the JavaScript results, see how the Lua VM is built in the Emscripten benchmark suite, for example by <code>python tests/runner.py benchmark.test_lua_scimark</code>.</p>
         </div>
       </div>
 
