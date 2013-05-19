@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>lua.web</title>
+    <title>lua.vm.js</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="">
@@ -32,12 +32,10 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="brand" href="#">Project name</a>
+          <a class="brand" href="#">lua.vm.js</a>
           <div class="nav-collapse collapse">
             <ul class="nav">
               <li class="active"><a href="#">Home</a></li>
-              <li><a href="#about">About</a></li>
-              <li><a href="#contact">Contact</a></li>
             </ul>
           </div><!--/.nav-collapse -->
         </div>
@@ -46,8 +44,46 @@
 
     <div class="container">
 
-      <h1>Bootstrap starter template</h1>
-      <p>Use this document as a way to quick start any new project.<br> All you get is this message and a barebones HTML document.</p>
+      <div class="hero-unit">
+        <h1>The Lua VM, in JavaScript</h1>
+        <p>This is an experiment in running <a href="http://www.lua.org/">Lua</a> on the web, by porting the Lua C implementation using <a href="http://emscripten.org">Emscripten</a>. The motivation is that porting the standard VM is the best way to get the full, correct Lua language. It's also a fast register-based VM.</p>
+        <h4>Are you really porting the entire Lua VM?</h4>
+        <p>Yes. Porting the VM means we are running an entire VM - including GC - inside your JavaScript VM.
+           That might sound worrying, but turns out the compiled Lua VM is only 200K (gzipped), and it can start up and run pretty quickly, XXXDATAXXX.</p>
+        <p><a href="#" class="btn btn-primary btn-large ">See how fast your browser can run a VM in a VM &raquo;</a></p>
+      </div>
+
+      <div class="row-fluid">
+        <div class="span">
+          <h3>Score: <b>waka</b></h3>
+
+<table class="table table-striped table-bordered table-hover">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Language</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>1</td>
+            <td>Some</td>
+            <td>One</td>
+            <td>English</td>
+        </tr>
+        <tr>
+            <td>2</td>
+            <td>Joe</td>
+            <td>Sixpack</td>
+            <td>English</td>
+        </tr>
+    </tbody>
+</table>
+
+        </div>
+      </div>
 
     </div> <!-- /container -->
 
