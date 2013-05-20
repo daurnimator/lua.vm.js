@@ -77,6 +77,12 @@
                   <td>MFLOPS (higher numbers are better)</td>
                   <td>measures numeric computation performance</td>
                 </tr>
+                <tr>
+                  <td>startup</td>
+                  <td id="startup-output"></td>
+                  <td>seconds (lower numbers are better)</td>
+                  <td>measures how long it takes the VM to be ready to run</td>
+                </tr>
               </tbody>
             </table>
         </div>
@@ -116,30 +122,48 @@ function run() {
   theButton.classList.remove('btn-primary');
   theButton.classList.add('btn-warning');
 
-  var benchmarks = {
-    binarytrees: {
+  var jobs = [
+    {
+      benchmark: 'binarytrees',
       args: ['binarytrees.lua', '14.72'],
-      calculate: function(msg) {
-        return msg.time/1000;
-      }
+      calculate: function() {
+        return this.msg.runtime/1000;
+      },
+      normalized: function() {
+        return (20.308/this.calculate());
+      },
     },
-    scimark: {
+    {
+      benchmark: 'scimark',
       args: ['scimark.lua'],
-      calculate: function(msg) {
-        return /\nSciMark +([\d\.]+)/.exec(msg.output)[1]; 
-      }
+      calculate: function() {
+        return /\nSciMark +([\d\.]+)/.exec(this.msg.output)[1]; 
+      },
+      normalized: function() {
+        return (this.calculate()/3.19);
+      },
+    },
+    { // do startup last so there is no network access, and can see previous
+      benchmark: 'startup',
+      args: ['nonexistent.lua'],
+      calculate: function() {
+        var startups = jobs.map(function(job) { return job.msg.startup });
+        startups.sort(function(x, y) { return x - y });
+        return startups[Math.floor((startups.length-1)/2)]/1000;
+      },
+      normalized: function() {
+        return 0.10/Math.max(this.calculate(), 1/60); // resolution: 1 frame
+      },
     }
-  };
+  ];
 
   function finalCalculation() {
     // normalize based on experimental data
-    return Math.round(100*(20.308/benchmarks.binarytrees.result + benchmarks.scimark.result/3.19));
+    var normalized = jobs.map(function(job) { return 100*job.normalized() });
+    console.log('normalized values: ' + normalized);
+    return Math.round(normalized.reduce(function(x, y) { return x + y }, 0));
   }
 
-  var jobs = [];
-  for (var b in benchmarks) {
-    jobs.push(b);
-  }
   var curr = 0;
   function runJob() {
     var job = jobs[curr++];
@@ -149,20 +173,20 @@ function run() {
       theButton.classList.add('btn-success');
       return;
     }
-    document.getElementById(job + '-output').innerHTML = '<b>(running)</b>';
+    document.getElementById(job.benchmark + '-output').innerHTML = '<b>(..running..)</b>';
     var worker = new Worker('benchmark-worker.js');
     worker.onmessage = function(event) {
       var msg = event.data;
       console.log(JSON.stringify(msg));
-      if (msg.benchmark != job) throw 'invalid data from benchmark worker';
-      benchmarks[job].result = benchmarks[job].calculate(msg);
-      document.getElementById(job + '-output').innerHTML = '<b>' + benchmarks[job].result + '</b>';
+      if (msg.benchmark != job.benchmark) throw 'invalid data from benchmark worker';
+      job.msg = msg;
+      document.getElementById(job.benchmark + '-output').innerHTML = '<b>' + job.calculate() + '</b>';
       runJob();
     };
-    console.log('requesting benchmark ' + job);
+    console.log('requesting benchmark ' + job.benchmark);
     worker.postMessage({
-      benchmark: job,
-      args: benchmarks[job].args
+      benchmark: job.benchmark,
+      args: job.args
     });
   }
   runJob();

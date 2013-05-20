@@ -7,7 +7,9 @@ var Module = {
   }
 };
 
-importScripts('lua.vm.js'); // TODO: include compile time in time, but make sure no network time here
+var pre = Date.now();
+
+importScripts('lua.vm.js');
 
 onmessage = function(event) {
   var msg = event.data;
@@ -15,7 +17,8 @@ onmessage = function(event) {
   Module.callMain(msg.args);
   postMessage({
     benchmark: msg.benchmark,
-    time: Date.now() - start,
+    startup: start - pre, // might include network access
+    runtime: Date.now() - start,
     output: Module.printBuffer
   });
 };
