@@ -46,10 +46,8 @@
 
       <div class="hero-unit">
         <h1>The Lua VM, on the Web</h1>
-        <p>This is an experiment in running <a href="http://www.lua.org/">Lua</a> on the web, by porting the Lua C implementation using <a href="http://emscripten.org">Emscripten</a>. The motivation is that porting the standard VM is the best way to get the full, correct Lua language. It's also a fast register-based VM.</p>
-        <h4>Are you really porting the entire Lua VM?</h4>
-        <p>Yes. Porting the VM means we are running an entire VM - including GC - inside your JavaScript VM.
-           That might sound worrying, but turns out the compiled Lua VM is only 200K (gzipped), and it can start up and run pretty quickly, XXXDATAXXX.</p>
+        <br>
+        <p>This is an experiment in running <a href="http://www.lua.org/">Lua</a> on the web, by porting the Lua C implementation using <a href="http://emscripten.org">Emscripten</a>. The motivation is that porting the standard VM is the best way to get the full, correct Lua language. It's also a fast register-based VM that fits in 200K of gzipped JavaScript.</p>
         <br>
         <p><a href="#" class="btn btn-primary btn-large " onclick="run(); return false" id="the_button">Measure how fast your browser can run a VM in a VM &raquo;</a></p>
       </div>
@@ -86,9 +84,21 @@
 
       <div class="row-fluid">
         <div class="span">
-          <h3>Notes</h3>
-          <p>For comparison, you can grab <a href="http://www.lua.org/download.html">Lua 5.2.2</a> (the version compiled here to JavaScript), build it natively, and run the same benchmarks (<a href="binarytrees.lua">binarytrees</a>, <a href="scimark.lua">scimark</a>). To run them, execute <code>lua scimark.lua</code> and <code>lua binarytrees.lua 14.72</code> (don't forget the second argument in binarytrees).</p>
-          <p>To reproduce the JavaScript results, see how the Lua VM is built in the Emscripten benchmark suite, for example by <code>python tests/runner.py benchmark.test_lua_scimark</code>.</p>
+          <h3>FAQ</h3>
+          <h4>Are you really porting the entire Lua VM?</h4>
+          <p>Yes. Porting the VM means we are running an entire VM - including GC - inside your JavaScript VM.</p>
+          <h4>How can a VM running in a VM be fast?</h4>
+          <p>Lua is implemented in portable C. It is possible to run C compiled to JavaScript at speeds approaching that of a native build, so that means that you can
+             in principle run C code that happens to implement a VM at high speed. Of course this is theoretical until it is actually attempted - that is the point
+             of this project.</p>
+          <h4>What do the numbers here mean?</h4>
+          <p>The individual benchmark results are reported in their native units, and have short descriptions in the table. The final combined score is more
+             abstract, it is basically a normalized mean of the individual numbers, where higher numbers are better. The number is intended to give a quick
+             summarizing number for comparison purposes.</p>
+          <p>You can also compare the results to a native build: Grab <a href="http://www.lua.org/download.html">Lua 5.2.2</a> (the version compiled here to JavaScript), build it natively, and run the same benchmarks (<a href="binarytrees.lua">binarytrees</a>, <a href="scimark.lua">scimark</a>). To run them, execute <code>lua scimark.lua</code> and <code>lua binarytrees.lua 14.72</code> (don't forget the second argument in binarytrees).</p>
+          <h4>How do I build the Lua VM in JavaScript?</h4>
+          <p>See how the Lua VM is built in the Emscripten benchmark suite, for example by <code>python tests/runner.py benchmark.test_lua_scimark</code>
+             (the build here is copied from that).</p>
         </div>
       </div>
 
