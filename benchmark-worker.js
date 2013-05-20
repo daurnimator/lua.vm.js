@@ -3,7 +3,7 @@ var Module = {
   noInitialRun: true,
   printBuffer: '',
   print: function(x) {
-    Module.printBuffer += x;
+    Module.printBuffer += x + '\n';
   }
 };
 
