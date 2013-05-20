@@ -59,7 +59,7 @@
               <thead>
                 <tr>
                   <th>Benchmark</th>
-                  <th>Result</th>
+                  <th><div class="text-center">Result</div></th>
                   <th>Scale</th>
                   <th>Description</th>
                 </tr>
@@ -67,19 +67,19 @@
               <tbody>
                 <tr>
                   <td>binarytrees</td>
-                  <td id="binarytrees-output"></td>
+                  <td id="binarytrees-cell"><div id="binarytrees-output" class="text-center"></div></td>
                   <td>seconds (lower numbers are better)</td>
                   <td>measures GC performance</td>
                 </tr>
                 <tr>
                   <td>scimark</td>
-                  <td id="scimark-output"></td>
+                  <td id="scimark-cell"><div id="scimark-output" class="text-center"></div></td>
                   <td>MFLOPS (higher numbers are better)</td>
                   <td>measures numeric computation performance</td>
                 </tr>
                 <tr>
                   <td>startup</td>
-                  <td id="startup-output"></td>
+                  <td id="startup-cell"><div id="startup-output" class="text-center"></div></td>
                   <td>seconds (lower numbers are better)</td>
                   <td>measures how long it takes the VM to be ready to run</td>
                 </tr>
@@ -174,6 +174,7 @@ function run() {
       return;
     }
     document.getElementById(job.benchmark + '-output').innerHTML = '<b>(..running..)</b>';
+      document.getElementById(job.benchmark + '-cell').style = 'background-color: #ffddaa';
     var worker = new Worker('benchmark-worker.js');
     worker.onmessage = function(event) {
       var msg = event.data;
@@ -181,6 +182,7 @@ function run() {
       if (msg.benchmark != job.benchmark) throw 'invalid data from benchmark worker';
       job.msg = msg;
       document.getElementById(job.benchmark + '-output').innerHTML = '<b>' + job.calculate() + '</b>';
+      document.getElementById(job.benchmark + '-cell').style = 'background-color: #bbccff';
       runJob();
     };
     console.log('requesting benchmark ' + job.benchmark);
