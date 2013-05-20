@@ -103,11 +103,22 @@ function run() {
   var benchmarks = {
     binarytrees: {
       args: ['binarytrees.lua', '14.72'],
+      calculate: function(msg) {
+        return msg.time/1000;
+      }
     },
     scimark: {
       args: ['scimark.lua'],
+      calculate: function(msg) {
+        return /\nSciMark +([\d\.]+)/.exec(msg.output)[1]; 
+      }
     }
   };
+
+  function finalCalculation() {
+    return benchmarks.binarytrees.result + ' : ' + benchmarks.scimark.result;
+  }
+
   var jobs = [];
   for (var b in benchmarks) {
     jobs.push(b);
@@ -116,7 +127,7 @@ function run() {
   function runJob() {
     var job = jobs[curr++];
     if (!job) {
-      theButton.innerHTML = 'Score: <b>waka</b>';
+      theButton.innerHTML = 'Score: <b>' + finalCalculation() + '</b>';
       theButton.classList.remove('btn-warning');
       theButton.classList.add('btn-success');
       return;
@@ -126,6 +137,7 @@ function run() {
       var msg = event.data;
       console.log(JSON.stringify(msg));
       if (msg.benchmark != job) throw 'invalid data from benchmark worker';
+      document.getElementById(job + '-output').innerHTML = benchmarks[job].result = benchmarks[job].calculate(msg);
       runJob();
     };
     console.log('requesting benchmark ' + job);
