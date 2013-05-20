@@ -122,7 +122,7 @@ function run() {
 
   function finalCalculation() {
     // normalize based on experimental data
-    return 100*(20.308/benchmarks.binarytrees.result + benchmarks.scimark.result/3.19).toFixed(2);
+    return Math.round(100*(20.308/benchmarks.binarytrees.result + benchmarks.scimark.result/3.19));
   }
 
   var jobs = [];
