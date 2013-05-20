@@ -121,7 +121,8 @@ function run() {
   };
 
   function finalCalculation() {
-    return benchmarks.binarytrees.result + ' : ' + benchmarks.scimark.result;
+    // normalize based on experimental data
+    return 100*(20.308/benchmarks.binarytrees.result + benchmarks.scimark.result/3.19).toFixed(2);
   }
 
   var jobs = [];
@@ -132,7 +133,7 @@ function run() {
   function runJob() {
     var job = jobs[curr++];
     if (!job) {
-      theButton.innerHTML = 'Score: <strong>' + finalCalculation() + '</strong>';
+      theButton.innerHTML = 'Score: <strong>' + finalCalculation() + '</strong> (higher numbers are better)';
       theButton.classList.remove('btn-warning');
       theButton.classList.add('btn-success');
       return;
