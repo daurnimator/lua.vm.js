@@ -12,8 +12,7 @@ importScripts('lua.vm.js'); // TODO: include compile time in time, but make sure
 onmessage = function(event) {
   var msg = event.data;
   var start = Date.now();
-throw JSON.stringify(msg.args);
-  Module.run(msg.args);
+  Module.callMain(msg.args);
   postMessage({
     benchmark: msg.benchmark,
     time: Date.now() - start,

@@ -50,7 +50,7 @@
         <h4>Are you really porting the entire Lua VM?</h4>
         <p>Yes. Porting the VM means we are running an entire VM - including GC - inside your JavaScript VM.
            That might sound worrying, but turns out the compiled Lua VM is only 200K (gzipped), and it can start up and run pretty quickly, XXXDATAXXX.</p>
-        <p><a href="#" class="btn btn-primary btn-large " onclick="run()">See how fast your browser can run a VM in a VM &raquo;</a></p>
+        <p><a href="#" class="btn btn-primary btn-large " onclick="run(); return false">See how fast your browser can run a VM in a VM &raquo;</a></p>
       </div>
 
       <div class="row-fluid">
@@ -118,6 +118,7 @@ function run() {
       if (msg.benchmark != job) throw 'invalid data from benchmark worker';
       runJob();
     };
+    console.log('requesting benchmark ' + job);
     worker.postMessage({
       benchmark: job,
       args: benchmarks[job].args
