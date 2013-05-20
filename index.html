@@ -86,9 +86,10 @@
         <div class="span">
           <h3>FAQ</h3>
           <h4>Are you really porting the entire Lua VM?</h4>
-          <p>Yes. Porting the VM means we are running an entire VM - including GC - inside your JavaScript VM.</p>
+          <p>Yes: The entire Lua 5.2.2 codebase written in C, including a full incremental GC and everything else, is compiled to JavaScript.</p>
           <h4>How can a VM running in a VM be fast?</h4>
-          <p>Lua is implemented in portable C. It is possible to run C compiled to JavaScript at speeds approaching that of a native build, so that means that you can
+          <p>Lua is implemented in portable C. It is possible to run C compiled to JavaScript at speeds
+             <a href="http://kripken.github.io/mloc_emscripten_talk/#/27">approaching that of a native build</a>, so that means that you can
              in principle run C code that happens to implement a VM at high speed. Of course this is theoretical until it is actually attempted - that is the point
              of this project.</p>
           <h4>What do the numbers here mean?</h4>
@@ -111,7 +112,7 @@ function run() {
   ran = true;
 
   var theButton = document.getElementById('the_button');
-  theButton.innerHTML = 'Running benchmarks...';
+  theButton.innerHTML = 'Running benchmarks... (this can take a while)';
   theButton.classList.remove('btn-primary');
   theButton.classList.add('btn-warning');
 
@@ -148,6 +149,7 @@ function run() {
       theButton.classList.add('btn-success');
       return;
     }
+    document.getElementById(job + '-output').innerHTML = '<b>(running)</b>';
     var worker = new Worker('benchmark-worker.js');
     worker.onmessage = function(event) {
       var msg = event.data;
