@@ -103,7 +103,14 @@
           <p>The individual benchmark results are reported in their native units, and have short descriptions in the table. The final combined score is more
              abstract, it is basically a normalized mean of the individual numbers, where higher numbers are better. The number is intended to give a quick
              summarizing number for comparison purposes.</p>
-          <p>You can also compare the results to a native build: Grab <a href="http://www.lua.org/download.html">Lua 5.2.2</a> (the version compiled here to JavaScript), build it natively, and run the same benchmarks (<a href="binarytrees.lua">binarytrees</a>, <a href="scimark.lua">scimark</a>). To run them, execute <code>lua scimark.lua</code> and <code>lua binarytrees.lua 14.72</code> (don't forget the second argument in binarytrees).</p>
+          <h4>I got [X] on my machine, how does that compare to other results?</h4>
+          <p>My desktop (Firefox Nightly on 64-bit Linux) gets a score of 489. Comparing to a native build of Lua, the results are similar to
+             other recent asm.js benchmarks (about 2x slower than native). Since Lua is quite fast to begin with, that could already suffice for
+             many uses, and things will improve as JavaScript engines continue to get faster.</p>
+          <p>If you want to compare the results to a native build on your machine, you can do so as follows:
+             Grab <a href="http://www.lua.org/download.html">Lua 5.2.2</a> (the version compiled here to JavaScript), build it natively,
+             and run the same benchmarks (<a href="binarytrees.lua">binarytrees</a>, <a href="scimark.lua">scimark</a>). To run them,
+             execute <code>lua scimark.lua</code> and <code>lua binarytrees.lua 14.72</code> (don't forget the second argument in binarytrees).</p>
           <h4>How do I build the Lua VM in JavaScript?</h4>
           <p>See how the Lua VM is built in the Emscripten benchmark suite, for example by <code>python tests/runner.py benchmark.test_lua_scimark</code>
              (the build here is copied from that, with the binarytrees.lua file embedded in it as well).</p>
