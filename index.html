@@ -92,11 +92,12 @@
         <div class="span">
           <h3>FAQ</h3>
           <h4>Are you really porting the entire Lua VM?</h4>
-          <p>Yes: The entire Lua 5.2.2 codebase written in C, including a full incremental GC and everything else, is compiled to JavaScript.</p>
+          <p>Yes: The entire Lua 5.2.2 codebase written in C is compiled to JavaScript here, including a full incremental GC and everything else.</p>
           <h4>How can a VM running in a VM be fast?</h4>
           <p>Lua is implemented in portable C. It is possible to run C compiled to JavaScript at speeds
-             <a href="http://kripken.github.io/mloc_emscripten_talk/#/27">approaching that of a native build</a>, so that means that you can
-             in principle run C code that happens to implement a VM at high speed. Of course this is theoretical until it is actually attempted - that is the point
+             <a href="http://kripken.github.io/mloc_emscripten_talk/#/27">approaching that of a native build</a> (using the <a href="http://asmjs.org/">asm.js</a> subset of
+             JavaScript), which means that you can
+             in principle run C code that happens to implement a VM at high speed as well. Of course this is theoretical until it is actually attempted - that is the point
              of this project.</p>
           <h4>What do the numbers here mean?</h4>
           <p>The individual benchmark results are reported in their native units, and have short descriptions in the table. The final combined score is more
@@ -105,7 +106,13 @@
           <p>You can also compare the results to a native build: Grab <a href="http://www.lua.org/download.html">Lua 5.2.2</a> (the version compiled here to JavaScript), build it natively, and run the same benchmarks (<a href="binarytrees.lua">binarytrees</a>, <a href="scimark.lua">scimark</a>). To run them, execute <code>lua scimark.lua</code> and <code>lua binarytrees.lua 14.72</code> (don't forget the second argument in binarytrees).</p>
           <h4>How do I build the Lua VM in JavaScript?</h4>
           <p>See how the Lua VM is built in the Emscripten benchmark suite, for example by <code>python tests/runner.py benchmark.test_lua_scimark</code>
-             (the build here is copied from that).</p>
+             (the build here is copied from that, with the binarytrees.lua file embedded in it as well).</p>
+          <h4>Can I use this to write web pages in Lua?</h4>
+          <p>We have the entire VM working, but to use Lua as a first-class web language requires that it be hooked up to the web platform, using the Lua
+             embedding API, which has not been done yet.</p>
+          <h4>Can I help make that happen?</h4>
+          <p>Yes! If you know Lua and want to help, <a href="https://github.com/kripken/lua.vm.js/issues">get in touch</a>. The Lua embedding API is
+             straightforward to use, but we really need feedback and help from people that "get" Lua in order to do the embedding properly.</p>
         </div>
       </div>
 
