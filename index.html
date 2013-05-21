@@ -47,7 +47,7 @@
       <div class="hero-unit">
         <h1>The Lua VM, on the Web</h1>
         <br>
-        <p>This is an experiment in running <a href="http://www.lua.org/">Lua</a> on the web, by porting the Lua C implementation using <a href="http://emscripten.org">Emscripten</a>. The motivation is that porting the standard VM is the best way to get the full, correct Lua language. It's also a fast register-based VM that fits in 200K of gzipped JavaScript.</p>
+        <p>This is an experiment in running <a href="http://www.lua.org/">Lua</a> on the web, by porting the Lua C implementation to JavaScript using <a href="http://emscripten.org">Emscripten</a>. The motivation is that porting the standard VM is the best way to get the full, correct Lua language. It's also a fast register-based VM that fits in 200K of gzipped JavaScript.</p>
         <br>
         <p><a href="#" class="btn btn-primary btn-large " onclick="run(); return false" id="the_button">Measure how fast your browser can run a VM in a VM &raquo;</a></p>
       </div>
@@ -101,10 +101,10 @@
              of this project.</p>
           <h4>What do the numbers here mean?</h4>
           <p>The individual benchmark results are reported in their native units, and have short descriptions in the table. The final combined score is more
-             abstract, it is basically a normalized mean of the individual numbers, where higher numbers are better. The number is intended to give a quick
+             abstract, it is basically a normalized mean of the individual numbers, where higher numbers are better. The final score is intended to give a quick
              summarizing number for comparison purposes.</p>
           <h4>I got [X] on my machine, how does that compare to other results?</h4>
-          <p>My desktop (Firefox Nightly on 64-bit Linux) gets a score of 489. Comparing to a native build of Lua, the results are similar to
+          <p>As one datapoint, my desktop (Firefox Nightly on 64-bit Linux) gets a score of 489. Comparing to a native build of Lua, the results are similar to
              other recent asm.js benchmarks (about 2x slower than native). Since Lua is quite fast to begin with, that could already suffice for
              many uses, and things will improve as JavaScript engines continue to get faster.</p>
           <p>If you want to compare the results to a native build on your machine, you can do so as follows:
@@ -208,6 +208,8 @@ function run() {
   runJob();
 }
     </script>
+
+    <a href="https://github.com/kripken/lua.vm.js"><img style="position: absolute; top: 35px; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a>
 
   </body>
 </html>
