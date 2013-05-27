@@ -62,9 +62,12 @@
 print('hello' .. ' ' .. 'world!')
 
 -- execute JavaScript code
-print(js.run('[0,1,2,3,4,5][3]'));
+print(js.run('[0,1,2,3,4,5][3]'))
 
--- interact with the JS world through Lua objects
+-- interact with the page
+js.run('window.alert("hello!")')
+
+-- interact with the page through Lua objects
 -- let window = js.get("window")
 -- window.alert("hello, again!")
 </textarea>
