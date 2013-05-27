@@ -19,7 +19,7 @@ js.wrapper.__call = function(table, ...)
   --  js_args = js_args .. tostring(v)
   --end
   local js_args = '"' .. ... .. '"' -- TODO: multiple args, and type checks
-  return js.get('LuaWrappers[' .. table.index .. '](' .. js_args .. ')')
+  return js.get('(tempFunc = LuaWrappers[' .. table.index .. '], tempFunc)(' .. js_args .. ')') -- tempFunc needed to work around js invalid call issue FIXME
 end
 
 js.get = function(what)
