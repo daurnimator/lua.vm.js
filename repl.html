@@ -55,14 +55,31 @@
       </div>
 
       <hr>
-      <textarea id="mytext">js.run("alert('hello, world')")</textarea>
+      <textarea id="mytext">
+-- execute arbitrary code
+
+js.run("window.alert('hello, world')")
+
+-- interact with the JS world through Lua objects
+
+let window = js.get("window")
+window.alert("hello, again!")
+</textarea>
       <hr>
+
+      <p><a href="#" class="btn btn-primary btn-large " onclick="run(); return false" id="the_button">Execute &raquo;</a></p>
 
     </div> <!-- /container -->
 
 <script>
+// CodeMirror
 var myCodeMirror = CodeMirror.fromTextArea(document.getElementById('mytext'));
 myCodeMirror.setSize(screen.width*0.6, screen.height*0.2);
+
+// Execution
+function run() {
+  alert(myCodeMirror.getValue());
+}
 </script>
 
     <a href="https://github.com/kripken/lua.vm.js"><img style="position: absolute; top: 35px; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a>
