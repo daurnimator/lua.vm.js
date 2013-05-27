@@ -47,7 +47,7 @@
       <div class="hero-unit">
         <h1>The Lua VM, on the Web</h1>
         <br>
-        <p>This is an experiment in running <a href="http://www.lua.org/">Lua</a> on the web, by porting the Lua C implementation to JavaScript using <a href="http://emscripten.org">Emscripten</a>. The motivation is that porting the standard VM is the best way to get the full, correct Lua language. It's also a fast register-based VM that fits in 200K of gzipped JavaScript.</p>
+        <p>This is an experiment in running <a href="http://www.lua.org/">Lua</a> on the web, by porting the Lua C implementation to JavaScript using <a href="http://emscripten.org">Emscripten</a>.</p>
         <br>
         <p><a href="#" class="btn btn-primary btn-large " onclick="run(); return false" id="the_button">Measure how fast your browser can run a VM in a VM &raquo;</a></p>
       </div>
@@ -92,7 +92,8 @@
         <div class="span">
           <h3>FAQ</h3>
           <h4>Are you really porting the entire Lua VM?</h4>
-          <p>Yes: The entire Lua 5.2.2 codebase written in C is compiled to JavaScript here, including a full incremental GC and everything else.</p>
+          <p>Yes: The entire Lua 5.2.2 codebase written in C is compiled to JavaScript here, including a full incremental GC and everything else.
+             It fits in 200K of gzipped JavaScript.</p>
           <h4>How can a VM running in a VM be fast?</h4>
           <p>Lua is implemented in portable C. It is possible to run C compiled to JavaScript at speeds
              <a href="http://kripken.github.io/mloc_emscripten_talk/#/27">approaching that of a native build</a> (using the <a href="http://asmjs.org/">asm.js</a> subset of
@@ -105,12 +106,17 @@
              summarizing number for comparison purposes.</p>
           <h4>I got [X] on my machine, how does that compare to other results?</h4>
           <p>As one datapoint, my desktop (Firefox Nightly on 64-bit Linux) gets a score of 489. Comparing to a native build of Lua, the results are similar to
-             other recent asm.js benchmarks (about 50% of native speed). Since Lua is quite fast to begin with, that could already suffice for
-             many uses, and things will improve as JavaScript engines continue to get faster.</p>
+             other recent asm.js benchmarks (about 50% of native speed).</p>
           <p>If you want to compare the results to a native build on your machine, you can do so as follows:
              Grab <a href="http://www.lua.org/download.html">Lua 5.2.2</a> (the version compiled here to JavaScript), build it natively,
              and run the same benchmarks (<a href="binarytrees.lua">binarytrees</a>, <a href="scimark.lua">scimark</a>). To run them,
              execute <code>lua scimark.lua</code> and <code>lua binarytrees.lua 14.72</code> (don't forget the second argument in binarytrees).</p>
+          <h4>What about <a href="http://luajit.org/">LuaJIT</a>?</h4>
+          <p>This project ports Lua, not LuaJIT. LuaJIT is more challenging to port, because in addition to being a JIT, its interpreter is in
+             optimized handwritten assembly. This is great for speed but makes things trickier when cross-compiling to a new platform.</p>
+          <p>LuaJIT is significantly faster than Lua, so it is even more significantly faster than this port to the web. However, it's important
+             to remember that even without LuaJIT, Lua is relatively fast compared to most other dynamic languages, like Python and Ruby, that
+             are very useful in many cases even without blazing speed.</p>
           <h4>How do I build the Lua VM in JavaScript?</h4>
           <p>See how the Lua VM is built in the Emscripten benchmark suite, for example by <code>python tests/runner.py benchmark.test_lua_scimark</code>
              (the build here is copied from that, with the binarytrees.lua file embedded in it as well).</p>
