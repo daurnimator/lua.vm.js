@@ -87,11 +87,12 @@ var myCodeMirror = CodeMirror.fromTextArea(document.getElementById('mytext'));
 var outputElement = document.getElementById('output')
 var Module = {
   print: function(x) {
-    outputElement.innerHTML = x + '<hr>' + outputElement.innerHTML;
+    outputElement.innerHTML = (outputElement.innerHTML ? outputElement.innerHTML + '<br>' : '') + x;
   }
 };
 
 function execute() {
+  outputElement.innerHTML = '';
   ccall('lua_execute', null, ['string'], [myCodeMirror.getValue()]);
 }
 </script>
