@@ -4,13 +4,30 @@
 
 js.run('LuaWrappers = {}')
 
-local wrapper_index = 1
+js.wrapper_index = 1
+
+js.wrapper = {}
+
+js.wrapper.__index = function(table, key)
+  return js.get('LuaWrappers[' .. table.index .. '].' .. key)
+end
+
+js.wrapper.__call = function(table, ...)
+  --local js_args = ''
+  --for i, v in ipairs(...) do
+  --  if i > 1 then js_args = js_args .. ',' end
+  --  js_args = js_args .. tostring(v)
+  --end
+  local js_args = '"' .. ... .. '"' -- TODO: multiple args, and type checks
+  return js.get('LuaWrappers[' .. table.index .. '](' .. js_args .. ')')
+end
 
 js.get = function(what)
-  -- grab a wrapper index
-  local index = wrapper_index
-  wrapper_index = wrapper_index + 1
-  js.run('LuaWrappers[' .. index .. '] = ' .. what)
-  return { index = index }
+  -- print('get! ' .. what)
+  local ret = { index = js.wrapper_index }
+  js.wrapper_index = js.wrapper_index + 1
+  js.run('LuaWrappers[' .. ret.index .. '] = ' .. what)
+  setmetatable(ret, js.wrapper)
+  return ret
 end
 
