@@ -58,9 +58,12 @@
       <div class="row">
         <div class="span6" border=1>
           <textarea id="mytext">
-print('hello!')
--- execute arbitrary code
--- js.run("window.alert('hello, world')")
+-- run some lua
+print('hello' .. ' ' .. 'world!')
+
+-- execute JavaScript code
+print(js.run('[0,1,2,3,4,5][3]'));
+
 -- interact with the JS world through Lua objects
 -- let window = js.get("window")
 -- window.alert("hello, again!")
