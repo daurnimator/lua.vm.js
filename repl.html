@@ -58,13 +58,13 @@
       <div class="row">
         <div class="span6" border=1>
           <textarea id="mytext">
--- run some lua
+-- run some Lua
 print('hello' .. ' ' .. 'world!')
 
--- execute JavaScript code
+-- execute JavaScript code from Lua
 print(js.run('[0,1,2,3,4,5][3]'))
 
--- interact with the page
+-- interact with the page from Lua
 js.run('window.alert("hello!")')
 
 -- interact with the page through Lua objects
