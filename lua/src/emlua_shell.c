@@ -18,11 +18,12 @@ lua_State *L = NULL;
 
 void lua_execute(char *str) {
   luaL_loadbuffer(L, str, strlen(str), "input");
-  lua_pcall(L, 0, 0, 0);
+  if (lua_pcall(L, 0, 0, 0)) {
+    printf("ERROR: %s\n", lua_tostring(L, -1));
+  };
 }
 
 int main (int argc, char **argv) {
-  int status, result;
   L = luaL_newstate();  /* create state */
   lua_gc(L, LUA_GCSTOP, 0);  /* stop collector during initialization */
   luaL_openlibs(L);  /* open libraries */
