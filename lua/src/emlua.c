@@ -7,14 +7,14 @@
 #include "lauxlib.h"
 
 
-static int l_js(lua_State *L) {
-  printf("hello world\n");
-
+static int js_run(lua_State *L) {
+  const char *s = luaL_optstring(L, 1, "%c");
+  printf("string is: %s\n", s);
   return 1;
 }
 
 static const luaL_Reg jslib[] = {
-  { "js", l_js },
+  { "run", js_run },
   { NULL, NULL }
 };
 
