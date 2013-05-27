@@ -11,7 +11,7 @@
 #include "lualib.h"
 
 #if EMSCRIPTEN
-#include <esmcripten.h>
+#include <emscripten.h>
 #endif
 
 lua_State *L = NULL;
@@ -28,10 +28,10 @@ int main (int argc, char **argv) {
   luaL_openlibs(L);  /* open libraries */
   lua_gc(L, LUA_GCRESTART, 0);
 
-  lua_execute("print('hello world')");
-
 #if EMSCRIPTEN
   emscripten_exit_with_live_runtime();
+#else
+  lua_execute("print('hello world')");
 #endif
 
   return 0;

@@ -48,7 +48,12 @@ LUA_O=	lua.o
 LUAC_T=	luac
 LUAC_O=	luac.o
 
-EMLUA_SHELL_T = emlua_shell
+ifdef EMSCRIPTEN
+  EMLUA_SHELL_T = emlua_shell.js
+  EMLUA_SHELL_ARGS = -O2 -s EXPORTED_FUNCTIONS="['_main', '_lua_execute']"
+else
+  EMLUA_SHELL_T = emlua_shell
+endif
 EMLUA_SHELL_O = emlua_shell.o
 
 ALL_O= $(BASE_O) $(LUA_O) $(LUAC_O) $(EMLUA_SHELL_O)
@@ -75,7 +80,7 @@ $(LUAC_T): $(LUAC_O) $(LUA_A)
 	$(CC) -o $@ $(LDFLAGS) $(LUAC_O) $(LUA_A) $(LIBS)
 
 $(EMLUA_SHELL_T): $(EMLUA_SHELL_O) $(LUA_A)
-	$(CC) -o $@ $(LDFLAGS) $(EMLUA_SHELL_O) $(LUA_A) $(LIBS)
+	$(CC) -o $@ $(LDFLAGS) $(EMLUA_SHELL_O) $(LUA_A) $(LIBS) $(EMLUA_SHELL_ARGS)
 
 clean:
 	$(RM) $(ALL_T) $(ALL_O)
