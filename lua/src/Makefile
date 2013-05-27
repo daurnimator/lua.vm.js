@@ -12,9 +12,11 @@ CFLAGS= -O2 -Wall -DLUA_COMPAT_ALL $(SYSCFLAGS) $(MYCFLAGS)
 #LDFLAGS= $(SYSLDFLAGS) $(MYLDFLAGS)
 LIBS= -lm $(SYSLIBS) $(MYLIBS)
 
-#AR= ar
-#RANLIB= ranlib
-#RM= rm -f
+ifndef EMSCRIPTEN
+  AR= ar
+  RANLIB= ranlib
+  RM= rm -f
+endif
 
 SYSCFLAGS=
 SYSLDFLAGS=
@@ -46,8 +48,11 @@ LUA_O=	lua.o
 LUAC_T=	luac
 LUAC_O=	luac.o
 
-ALL_O= $(BASE_O) $(LUA_O) $(LUAC_O)
-ALL_T= $(LUA_A) $(LUA_T) $(LUAC_T)
+EMLUA_SHELL_T = emlua_shell
+EMLUA_SHELL_O = emlua_shell.o
+
+ALL_O= $(BASE_O) $(LUA_O) $(LUAC_O) $(EMLUA_SHELL_O)
+ALL_T= $(LUA_A) $(LUA_T) $(LUAC_T) $(EMLUA_SHELL_T)
 ALL_A= $(LUA_A)
 
 # Targets start here.
@@ -68,6 +73,9 @@ $(LUA_T): $(LUA_O) $(LUA_A)
 
 $(LUAC_T): $(LUAC_O) $(LUA_A)
 	$(CC) -o $@ $(LDFLAGS) $(LUAC_O) $(LUA_A) $(LIBS)
+
+$(EMLUA_SHELL_T): $(EMLUA_SHELL_O) $(LUA_A)
+	$(CC) -o $@ $(LDFLAGS) $(EMLUA_SHELL_O) $(LUA_A) $(LIBS)
 
 clean:
 	$(RM) $(ALL_T) $(ALL_O)
