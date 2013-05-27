@@ -42,6 +42,7 @@
           <div class="nav-collapse collapse">
             <ul class="nav">
               <li class="active"><a href="lua.vm.js.html">Home</a></li>
+              <li class="active"><a href="repl.html">REPL</a></li>
             </ul>
           </div><!--/.nav-collapse -->
         </div>
@@ -54,8 +55,9 @@
         <h2>Lua REPL</h2>
       </div>
 
-      <hr>
-      <textarea id="mytext">
+      <div class="row">
+        <div class="span6" border=1>
+          <textarea id="mytext">
 print('hello!')
 -- execute arbitrary code
 -- js.run("window.alert('hello, world')")
@@ -63,7 +65,11 @@ print('hello!')
 -- let window = js.get("window")
 -- window.alert("hello, again!")
 </textarea>
-      <hr>
+        </div>
+        <div class="span6">
+          <pre id="output"></pre>
+        </div>
+      </div>
 
       <p><a href="#" class="btn btn-primary btn-large " onclick="execute(); return false" id="the_button">Execute &raquo;</a></p>
 
@@ -72,11 +78,14 @@ print('hello!')
 <script>
 // CodeMirror
 var myCodeMirror = CodeMirror.fromTextArea(document.getElementById('mytext'));
-myCodeMirror.setSize(screen.width*0.6, screen.height*0.2);
+//myCodeMirror.setSize(screen.width*0.6, screen.height*0.2);
 
 // Execution
+var outputElement = document.getElementById('output')
 var Module = {
-  print: function(x) { alert(x) }
+  print: function(x) {
+    outputElement.innerHTML = x + '<hr>' + outputElement.innerHTML;
+  }
 };
 
 function execute() {
