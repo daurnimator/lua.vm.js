@@ -20,9 +20,17 @@ js.run([[
         case 'function': return 4;
         default: return 0;
       }
+    },
+    funcWrapper: function(i) {
+      return function() {
+       executeLua('js.lua_table[' + i + ']()'); 
+      };
     }
   }
 ]])
+
+js.lua_table = {}
+js.lua_index = 1
 
 js.wrapper_index = 1
 
@@ -36,6 +44,12 @@ js.wrapper.__call = function(table, ...)
   function to_js(x)
     if type(x) == 'number' then return tostring(x)
     elseif type(x) == 'string' then return '"' .. x .. '"'
+    elseif type(x) == 'function' then
+      local lua_index = js.lua_index
+      js.lua_index = js.lua_index + 1
+      js.lua_table[lua_index] = x
+      return 'Lua.funcWrapper(' .. lua_index .. ')'
+    --elseif type(x) == 'table' then return 'Lua.wrappers[
     else return '<{[Unsupported]}>' end
   end
   local js_args = ''
