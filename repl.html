@@ -83,6 +83,19 @@ print("this window has title '" .. document.title .. "'")
 
       <p><a href="#" class="btn btn-primary btn-large " onclick="executeLua(myCodeMirror.getValue(), true); return false" id="the_button">Execute &raquo;</a></p>
 
+      <div class="row-fluid">
+        <div class="span">
+          <h3>Status</h3>
+          <p>This is a work in progress. The stuff you see in the example above works, which includes using JavaScript objects from
+             Lua as if they were Lua objects, calling the DOM, callbacks into Lua, etc. This is enough for basic scripting using Lua, but
+             not close to complete.</p>
+          <p>No effort has been made to optimize the JavaScript/Lua glue layer whatsoever. It is just a proof of concept at this
+             point.</p>
+          <p>The glue layer holds strong references to everything currently. We could use Lua userdata finalizers to fix that.</p>
+          <p>See the FAQ on the <a href="lua.vm.js.html">main page</a> for more.</p>
+        </div>
+      </div>
+
     </div> <!-- /container -->
 
 <script>
