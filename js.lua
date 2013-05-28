@@ -23,7 +23,7 @@ js.run([[
     },
     funcWrapper: function(i) {
       return function() {
-       executeLua('js.lua_table[' + i + ']()'); 
+        executeLua('js.lua_table[' + i + ']()'); 
       };
     }
   }
