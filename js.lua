@@ -2,14 +2,14 @@
 --
 -- Horribly hackish, this is not the right way to do it
 
-js.run('LuaWrappers = {}')
+js.run('Lua = { wrappers: {} }')
 
 js.wrapper_index = 1
 
 js.wrapper = {}
 
 js.wrapper.__index = function(table, key)
-  return js.get('LuaWrappers[' .. table.index .. '].' .. key)
+  return js.get('Lua.wrappers[' .. table.index .. '].' .. key)
 end
 
 js.wrapper.__call = function(table, ...)
@@ -23,14 +23,14 @@ js.wrapper.__call = function(table, ...)
     if i > 1 then js_args = js_args .. ',' end
     js_args = js_args .. to_js(v)
   end
-  return js.get('(tempFunc = LuaWrappers[' .. table.index .. '], tempFunc)(' .. js_args .. ')') -- tempFunc needed to work around js invalid call issue FIXME
+  return js.get('(tempFunc = Lua.wrappers[' .. table.index .. '], tempFunc)(' .. js_args .. ')') -- tempFunc needed to work around js invalid call issue FIXME
 end
 
 js.get = function(what)
   -- print('get! ' .. what)
   local ret = { index = js.wrapper_index }
   js.wrapper_index = js.wrapper_index + 1
-  js.run('LuaWrappers[' .. ret.index .. '] = ' .. what)
+  js.run('Lua.wrappers[' .. ret.index .. '] = ' .. what)
   setmetatable(ret, js.wrapper)
   return ret
 end
