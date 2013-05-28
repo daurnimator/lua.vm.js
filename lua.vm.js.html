@@ -122,11 +122,12 @@
           <p>See how the Lua VM is built in the Emscripten benchmark suite, for example by <code>python tests/runner.py benchmark.test_lua_scimark</code>
              (the build here is copied from that, with the binarytrees.lua file embedded in it as well).</p>
           <h4>Can I use this to write web pages in Lua?</h4>
-          <p>We have the entire VM working, but to use Lua as a first-class web language requires that it be hooked up to the web platform, using the Lua
-             embedding API, which has not been done yet.</p>
+          <p>Work to connect Lua to the rest of the web environment is in progress. Not everything works
+             yet, but you can already do basic stuff, see the <a href="repl.html">REPL</a> page. Note that no
+             optimization work on the <code>Lua <--> JS</code> bridge has been done so far.</p>
           <h4>Can I help make that happen?</h4>
-          <p>Yes! If you know Lua and want to help, <a href="https://github.com/kripken/lua.vm.js/issues">get in touch</a>. The Lua embedding API is
-             straightforward to use, but we really need feedback and help from people that "get" Lua in order to do the embedding properly.</p>
+          <p>Yes! If you know Lua and want to help, <a href="https://github.com/kripken/lua.vm.js/issues">get in touch</a> :)
+             We really need feedback and help from people that "get" Lua in order to do this properly.</p>
         </div>
       </div>
 
