@@ -13,10 +13,13 @@ js.wrapper.__index = function(table, key)
 end
 
 js.wrapper.__call = function(table, ...)
+  function to_lua(x)
+    return '"' .. x .. '"'
+  end
   local js_args = ''
   for i, v in ipairs({...}) do
     if i > 1 then js_args = js_args .. ',' end
-    js_args = js_args .. '"' .. v .. '"'
+    js_args = js_args .. to_lua(v)
   end
   return js.get('(tempFunc = LuaWrappers[' .. table.index .. '], tempFunc)(' .. js_args .. ')') -- tempFunc needed to work around js invalid call issue FIXME
 end
