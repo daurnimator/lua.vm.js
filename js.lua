@@ -52,6 +52,8 @@ js.get = function(what)
   local return_type = js.run("Lua.test('" .. what .. "')")
   if return_type == js.number then
     return js.run('Lua.last')
+  elseif return_type == js.string then
+    return js.run_string('Lua.last')
   elseif return_type == js.object or return_type == js.func then
     js.run('Lua.wrappers[' .. ret.index .. '] = Lua.last')
     setmetatable(ret, js.wrapper)

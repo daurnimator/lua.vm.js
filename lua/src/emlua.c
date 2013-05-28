@@ -23,8 +23,21 @@ static int js_run(lua_State *L) {
   return 1;
 }
 
+static int js_run_string(lua_State *L) {
+  const char *s = luaL_optstring(L, 1, "-1");
+  char *ret = "UNSUPPORTED";
+#if EMSCRIPTEN
+  ret = emscripten_run_script_string(s);
+#else
+  printf("js_run: %s\n", s);
+#endif
+  lua_pushstring(L, ret);
+  return 1;
+}
+
 static const luaL_Reg jslib[] = {
   { "run", js_run },
+  { "run_string", js_run_string },
   { NULL, NULL }
 };
 

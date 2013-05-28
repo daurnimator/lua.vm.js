@@ -73,6 +73,9 @@ window.alert("hello from lua!")
 
 local screen = js.get("screen")
 print("you haz " .. (screen.width*screen.height) .. " pixels")
+
+local document = js.get("document")
+print("this window has title " .. document.title)
 </textarea>
         </div>
         <div class="span5">
