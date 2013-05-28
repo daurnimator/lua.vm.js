@@ -14,7 +14,9 @@ end
 
 js.wrapper.__call = function(table, ...)
   function to_lua(x)
-    return '"' .. x .. '"'
+    if type(x) == 'number' then return tostring(x)
+    elseif type(x) == 'string' then return '"' .. x .. '"'
+    else return '<{[Unsupported]}>' end
   end
   local js_args = ''
   for i, v in ipairs({...}) do
