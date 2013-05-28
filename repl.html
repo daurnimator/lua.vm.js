@@ -56,23 +56,26 @@
       </div>
 
       <div class="row">
-        <div class="span6" border=1>
+        <div class="span7" border=1>
           <textarea id="mytext">
--- run some Lua
+-- Run some Lua
+
 print('hello' .. ' ' .. 'world!')
 
--- execute JavaScript code from Lua
+-- Execute JavaScript code from Lua
+
 print(js.run('[0,1,2,3,4,5][3]'))
 
--- interact with the page from Lua
-js.run('window.alert("hello!")')
+-- Interact with the page using Lua
 
--- interact with the page through Lua objects
 local window = js.get("window")
-window.alert("hello, again!")
+window.alert("hello from lua!")
+
+local screen = js.get("screen")
+print("you haz " .. (screen.width*screen.height) .. " pixels")
 </textarea>
         </div>
-        <div class="span6">
+        <div class="span5">
           <pre id="output"></pre>
         </div>
       </div>
