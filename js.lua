@@ -13,12 +13,11 @@ js.wrapper.__index = function(table, key)
 end
 
 js.wrapper.__call = function(table, ...)
-  --local js_args = ''
-  --for i, v in ipairs(...) do
-  --  if i > 1 then js_args = js_args .. ',' end
-  --  js_args = js_args .. tostring(v)
-  --end
-  local js_args = '"' .. ... .. '"' -- TODO: multiple args, and type checks
+  local js_args = ''
+  for i, v in ipairs({...}) do
+    if i > 1 then js_args = js_args .. ',' end
+    js_args = js_args .. '"' .. v .. '"'
+  end
   return js.get('(tempFunc = LuaWrappers[' .. table.index .. '], tempFunc)(' .. js_args .. ')') -- tempFunc needed to work around js invalid call issue FIXME
 end
 
