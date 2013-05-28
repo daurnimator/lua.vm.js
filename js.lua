@@ -2,7 +2,27 @@
 --
 -- Horribly hackish, this is not the right way to do it
 
-js.run('Lua = { wrappers: {} }')
+js.number = 1
+js.string = 2
+js.object = 3
+js.func = 4
+
+js.run([[
+  Lua = {
+    wrappers: {},
+    last: null,
+    test: function(what) {
+      Lua.last = eval(what);
+      switch (typeof Lua.last) {
+        case 'number': return 1;
+        case 'string': return 2;
+        case 'object': return 3;
+        case 'function': return 4;
+        default: return 0;
+      }
+    }
+  }
+]])
 
 js.wrapper_index = 1
 
@@ -27,11 +47,17 @@ js.wrapper.__call = function(table, ...)
 end
 
 js.get = function(what)
-  -- print('get! ' .. what)
   local ret = { index = js.wrapper_index }
   js.wrapper_index = js.wrapper_index + 1
-  js.run('Lua.wrappers[' .. ret.index .. '] = ' .. what)
-  setmetatable(ret, js.wrapper)
-  return ret
+  local return_type = js.run("Lua.test('" .. what .. "')")
+  if return_type == js.number then
+    return js.run('Lua.last')
+  elseif return_type == js.object or return_type == js.func then
+    js.run('Lua.wrappers[' .. ret.index .. '] = Lua.last')
+    setmetatable(ret, js.wrapper)
+    return ret
+  else
+    return '!Unsupported!'
+  end
 end
 
