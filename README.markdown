@@ -4,6 +4,8 @@ lua.vm.js
 
 The Lua VM, on the Web
 
+Online demo: http://kripken.github.io/lua.vm.js/lua.vm.js.html
+
 
 License
 =======
