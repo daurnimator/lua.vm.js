@@ -86,13 +86,15 @@ print("this window has title '" .. document.title .. "'")
       <div class="row-fluid">
         <div class="span">
           <h3>Status</h3>
-          <p>This is a work in progress. The stuff you see in the example above works, which includes using JavaScript objects from
-             Lua as if they were Lua objects, calling the DOM, callbacks into Lua, etc. This is enough for basic scripting using Lua, but
-             not close to complete.</p>
-          <p>No effort has been made to optimize the JavaScript/Lua glue layer whatsoever. It is just a proof of concept at this
-             point.</p>
-          <p>The glue layer holds strong references to everything currently. We could use Lua userdata finalizers to fix that.</p>
-          <p>See the FAQ on the <a href="lua.vm.js.html">main page</a> for more.</p>
+          <p>The stuff you see in the example above works, which includes using JavaScript objects from
+             Lua as if they were Lua objects, calling the DOM, callbacks into Lua, etc. And as mentioned on
+             the <a href="lua.vm.js.html">main page</a>, this uses the compiled Lua VM, so it includes all
+             the normal Lua languages features, and it's compiled into asm.js so it can have reasonable performance.</p>
+          <h3>Limitations</h3>
+          <p>Not all ways to interact between JavaScript and Lua have been implemented yet, this is a work in progress. If you see something missing please
+             file an issue.</p>
+          <p>No effort has been made to optimize the JavaScript/Lua glue layer whatsoever.</p>
+          <p>The glue layer holds strong references to everything currently. We could use Lua userdata with <code>__gc</code> to fix that.</p>
         </div>
       </div>
 
