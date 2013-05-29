@@ -77,3 +77,5 @@ js.get = function(what)
   end
 end
 
+js.global = js.get('theGlobal')
+

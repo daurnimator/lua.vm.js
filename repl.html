@@ -64,14 +64,14 @@ print(js.run('[0,1,2,3,4,5][3]')) -- Run JS from Lua
 
 -- Interact with the page using Lua
 
-local window = js.get("window")
+local screen = js.global.screen
+print("you haz " .. (screen.width*screen.height) .. " pixels")
+
+local window = js.global -- global object in JS is the window
 window.alert("hello from lua!")
 window.setTimeout(function() print('hello from lua callback') end, 2500)
 
-local screen = js.get("screen")
-print("you haz " .. (screen.width*screen.height) .. " pixels")
-
-local document = js.get("document")
+local document = js.global.document
 print("this window has title '" .. document.title .. "'")
 </textarea>
         </div>
@@ -117,6 +117,8 @@ function executeLua(code, clear) {
   if (clear) outputElement.innerHTML = '';
   ccall('lua_execute', null, ['string'], [code]);
 }
+
+var theGlobal = this;
 </script>
 
 <script src="lua/src/emlua_shell.js"></script>
