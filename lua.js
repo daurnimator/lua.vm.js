@@ -8,13 +8,27 @@ var Lua = {
     xhr.overrideMimeType('text/plain');
     xhr.send(null);
     var jsLua = xhr.response;
-    executeLua(jsLua);
+    Lua.execute(jsLua);
+
+    // Run script tags on page
+    var onload = window.onload;
+    window.onload = function() {
+      if (onload) onload();
+      Lua.executeScripts();
+    };
   },
   execute: function(code) {
     Module.ccall('lua_execute', null, ['string'], [code]);
   },
 
   // internal
+  executeScripts: function() {
+    Array.prototype.forEach.call(document.querySelectorAll('script[type=\"text\/lua\"]'), function(tag) {
+      Lua.execute(tag.innerHTML)
+    });
+  },
+
+  // internal glue layer
   theGlobal: this,
   wrappers: {},
   last: null,
