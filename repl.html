@@ -115,13 +115,14 @@ var Module = {
 
 function executeLua(code, clear) {
   if (clear) outputElement.innerHTML = '';
-  ccall('lua_execute', null, ['string'], [code]);
+  Lua.execute(code);
 }
 
 var theGlobal = this;
 </script>
 
 <script src="lua/src/emlua_shell.js"></script>
+<script src="lua.js"></script>
 
 <script>
 // load js.lua glue
