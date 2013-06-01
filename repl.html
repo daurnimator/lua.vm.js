@@ -117,22 +117,10 @@ function executeLua(code, clear) {
   if (clear) outputElement.innerHTML = '';
   Lua.execute(code);
 }
-
-var theGlobal = this;
 </script>
 
 <script src="lua/src/emlua_shell.js"></script>
 <script src="lua.js"></script>
-
-<script>
-// load js.lua glue
-var xhr = new XMLHttpRequest();
-xhr.open('get', 'js.lua', false);
-xhr.overrideMimeType('text/plain');
-xhr.send(null);
-var jsLua = xhr.response;
-executeLua(jsLua);
-</script>
 
     <a href="https://github.com/kripken/lua.vm.js"><img style="position: absolute; top: 35px; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a>
 
