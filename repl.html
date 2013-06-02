@@ -75,6 +75,9 @@ window.setTimeout(function() print('hello from lua callback') end, 2500)
 
 local document = js.global.document
 print("this window has title '" .. document.title .. "'")
+
+local buffer = js.new.ArrayBuffer(20) -- call a constructor
+print("i made an ArrayBuffer of size " .. buffer.byteLength)
 </textarea>
         </div>
         <div class="span5">

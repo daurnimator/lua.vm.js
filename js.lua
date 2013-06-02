@@ -39,8 +39,7 @@ js.wrapper.__index = function(table, key)
 end
 
 js.wrapper.__call = function(table, ...)
-  js_args = js.convert_args({...})
-  return js.get('(tempFunc = Lua.wrappers[' .. table.index .. '], tempFunc)(' .. js_args .. ')') -- tempFunc needed to work around js invalid call issue FIXME
+  return js.get('(tempFunc = Lua.wrappers[' .. table.index .. '], tempFunc)(' .. js.convert_args({...}) .. ')') -- tempFunc needed to work around js invalid call issue FIXME
 end
 
 js.get = function(what)
@@ -61,4 +60,17 @@ js.get = function(what)
 end
 
 js.global = js.get('Lua.theGlobal')
+
+js.new = {}
+setmetatable(js.new, js.new)
+js.new.__index = function(table, key)
+  local ret = { what = key }
+  setmetatable(ret, js.new.property)
+  return ret
+end
+
+js.new.property = {}
+js.new.property.__call = function(table, ...)
+  return js.get('new ' .. table.what .. '(' .. js.convert_args({...}) .. ')')
+end
 
