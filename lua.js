@@ -48,8 +48,10 @@ var Lua = {
     }
   },
   funcWrapper: function(i) {
+    var realthis = this;
     return function() {
-      Lua.execute('js.lua_table[' + i + ']()'); 
+      if (realthis.reverseWrappers[this]) Lua.execute('js.lua_table[' + i + '](js.storeGet('+realthis.reverseWrappers[this]+'))');
+      else Lua.execute('js.lua_table[' + i + ']()');
     };
   }
 };

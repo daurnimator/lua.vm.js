@@ -10,22 +10,23 @@ js.func = 4
 js.lua_table = {}
 js.lua_index = 1
 
+js.to_js = function(x)
+  if type(x) == 'number' then return tostring(x)
+  elseif type(x) == 'string' then return '"' .. x .. '"'
+  elseif type(x) == 'function' then
+    local lua_index = js.lua_index
+    js.lua_index = js.lua_index + 1
+    js.lua_table[lua_index] = x
+    return 'Lua.funcWrapper(' .. lua_index .. ')'
+  --elseif type(x) == 'table' then return 'Lua.wrappers[
+  else return '<{[Unsupported]}>' end
+end
+
 js.convert_args = function(args)
-  function to_js(x)
-    if type(x) == 'number' then return tostring(x)
-    elseif type(x) == 'string' then return '"' .. x .. '"'
-    elseif type(x) == 'function' then
-      local lua_index = js.lua_index
-      js.lua_index = js.lua_index + 1
-      js.lua_table[lua_index] = x
-      return 'Lua.funcWrapper(' .. lua_index .. ')'
-    --elseif type(x) == 'table' then return 'Lua.wrappers[
-    else return '<{[Unsupported]}>' end
-  end
   local js_args = ''
   for i, v in ipairs(args) do
     if i > 1 then js_args = js_args .. ',' end
-    js_args = js_args .. to_js(v)
+    js_args = js_args .. js.to_js(v)
   end
   return js_args
 end
@@ -41,6 +42,10 @@ js.wrapper.__index = function(table, key)
     return ret
   end
   return js.get('Lua.wrappers[' .. table.index .. '].' .. key, table)
+end
+
+js.wrapper.__newindex = function(table, key, v)
+  js.run('Lua.wrappers[' .. table.index .. '].'..key.."="..js.to_js(v))
 end
 
 js.wrapper.__call = function(table, ...)
@@ -60,6 +65,7 @@ local wrapper_store = {}
 setmetatable(wrapper_store, {__mode='v'})
 
 js.getWrapperStore = function() return wrapper_store end
+js.storeGet = function(idx) return wrapper_store[idx] end
 
 js.get = function(what, parent)
   local ret = { index = js.wrapper_index, parent=false }
