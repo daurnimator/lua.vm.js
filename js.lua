@@ -35,6 +35,11 @@ js.wrapper_index = 1
 js.wrapper = {}
 
 js.wrapper.__index = function(table, key)
+  if key == 'new' then
+    local ret = { what = 'Lua.wrappers[' .. table.index .. ']' }
+    setmetatable(ret, js.new.property)
+    return ret
+  end
   return js.get('Lua.wrappers[' .. table.index .. '].' .. key)
 end
 
