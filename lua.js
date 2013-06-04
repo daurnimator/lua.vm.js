@@ -31,9 +31,14 @@ var Lua = {
   // internal glue layer
   theGlobal: this,
   wrappers: {},
+  reverseWrappers: {},
   last: null,
-  test: function(what) {
+  test: function(what, idx) {
     Lua.last = eval(what);
+    if (this.reverseWrappers[Lua.last]) {
+      return -this.reverseWrappers[Lua.last];
+    }
+    this.reverseWrappers[Lua.last] = idx;
     switch (typeof Lua.last) {
       case 'number': return 1;
       case 'string': return 2;
@@ -44,7 +49,7 @@ var Lua = {
   },
   funcWrapper: function(i) {
     return function() {
-      executeLua('js.lua_table[' + i + ']()'); 
+      Lua.execute('js.lua_table[' + i + ']()'); 
     };
   }
 };

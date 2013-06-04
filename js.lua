@@ -40,24 +40,42 @@ js.wrapper.__index = function(table, key)
     setmetatable(ret, js.new.property)
     return ret
   end
-  return js.get('Lua.wrappers[' .. table.index .. '].' .. key)
+  return js.get('Lua.wrappers[' .. table.index .. '].' .. key, table)
 end
 
 js.wrapper.__call = function(table, ...)
-  return js.get('(tempFunc = Lua.wrappers[' .. table.index .. '], tempFunc)(' .. js.convert_args({...}) .. ')') -- tempFunc needed to work around js invalid call issue FIXME
+  if rawget(table, 'parent') then
+    return js.get('(tempFunc = Lua.wrappers[' .. table.index .. '], tempFunc).call(Lua.wrappers[' .. table.parent.index .. '], ' .. js.convert_args({...}) .. ')') -- tempFunc needed to work around js invalid call issue FIXME
+  else
+    return js.get('(tempFunc = Lua.wrappers[' .. table.index .. '], tempFunc)(' .. js.convert_args({...}) .. ')') -- tempFunc needed to work around js invalid call issue FIXME
+  end
 end
 
-js.get = function(what)
-  local ret = { index = js.wrapper_index }
+js.wrapper.__gc = function(table)
+  js.run('delete Lua.reverseWrappers[Lua.wrappers['..table.index..']]')
+  js.run('delete Lua.wrappers['..table.index..']')
+end
+
+local wrapper_store = {}
+setmetatable(wrapper_store, {__mode='v'})
+
+js.getWrapperStore = function() return wrapper_store end
+
+js.get = function(what, parent)
+  local ret = { index = js.wrapper_index, parent=false }
   js.wrapper_index = js.wrapper_index + 1
-  local return_type = js.run("Lua.test('" .. what .. "')")
-  if return_type == js.number then
+  local return_type = js.run("Lua.test('" .. what .. "', "..(js.wrapper_index-1)..")")
+  if return_type < 0 then
+    return wrapper_store[-return_type]
+  elseif return_type == js.number then
     return js.run('Lua.last')
   elseif return_type == js.string then
     return js.run_string('Lua.last')
   elseif return_type == js.object or return_type == js.func then
     js.run('Lua.wrappers[' .. ret.index .. '] = Lua.last')
+    ret.parent = parent
     setmetatable(ret, js.wrapper)
+    wrapper_store[js.wrapper_index-1] = ret
     return ret
   else
     return '!Unsupported!'
