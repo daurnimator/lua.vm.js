@@ -50,7 +50,9 @@ end
 
 js.wrapper.__call = function(table, ...)
   if rawget(table, 'parent') then
-    return js.get('(tempFunc = Lua.wrappers[' .. table.index .. '], tempFunc).call(Lua.wrappers[' .. table.parent.index .. '], ' .. js.convert_args({...}) .. ')') -- tempFunc needed to work around js invalid call issue FIXME
+    local suffix = js.convert_args({...})
+    if string.len(suffix) > 0 then suffix = ',' .. suffix end
+    return js.get('(tempFunc = Lua.wrappers[' .. table.index .. '], tempFunc).call(Lua.wrappers[' .. table.parent.index .. ']' .. suffix .. ')') -- tempFunc needed to work around js invalid call issue FIXME
   else
     return js.get('(tempFunc = Lua.wrappers[' .. table.index .. '], tempFunc)(' .. js.convert_args({...}) .. ')') -- tempFunc needed to work around js invalid call issue FIXME
   end
