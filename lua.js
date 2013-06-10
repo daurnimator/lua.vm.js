@@ -2,13 +2,7 @@
 var Lua = {
   // public
   init: function() {
-    // Load Lua-side glue TODO: embed the file here, avoid the xhr
-    var xhr = new XMLHttpRequest();
-    xhr.open('get', 'js.lua', false);
-    xhr.overrideMimeType('text/plain');
-    xhr.send(null);
-    var jsLua = xhr.response;
-    Lua.execute(jsLua);
+    Lua.execute({{{ JS_LUA }}});
 
     // Run script tags on page
     var onload = window.onload;
