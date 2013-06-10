@@ -9,7 +9,7 @@ var Module = {
 
 var pre = Date.now();
 
-importScripts('lua.vm.js');
+importScripts('benchmark.js');
 
 onmessage = function(event) {
   var msg = event.data;
