@@ -148,7 +148,7 @@ function run() {
   var jobs = [
     {
       benchmark: 'binarytrees',
-      args: ['binarytrees.lua', '14.72'],
+      args: ['binarytrees.lua'],
       calculate: function() {
         return this.msg.runtime/1000;
       },
@@ -168,7 +168,7 @@ function run() {
     },
     { // do startup last so there is no network access, and can see previous
       benchmark: 'startup',
-      args: ['nonexistent.lua'],
+      args: null,
       calculate: function() {
         var startups = jobs.map(function(job) { return job.msg.startup });
         startups.sort(function(x, y) { return x - y });

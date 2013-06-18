@@ -4,12 +4,14 @@ var Lua = {
   init: function() {
     Lua.execute({{{ JS_LUA }}});
 
-    // Run script tags on page
-    var onload = window.onload;
-    window.onload = function() {
-      if (onload) onload();
-      Lua.executeScripts();
-    };
+    if (typeof window == 'object') {
+      // Run script tags on page
+      var onload = window.onload;
+      window.onload = function() {
+        if (onload) onload();
+        Lua.executeScripts();
+      };
+    }
   },
   execute: function(code) {
     Module.ccall('lua_execute', null, ['string'], [code]);
@@ -50,5 +52,5 @@ var Lua = {
   }
 };
 
-Lua.init();
+if (!Module.noInitialRun) Lua.init();
 
