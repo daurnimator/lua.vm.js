@@ -50,7 +50,7 @@ LUAC_O=	luac.o
 
 ifdef EMSCRIPTEN
   EMLUA_SHELL_T = emlua_shell.js
-  EMLUA_SHELL_ARGS = -O2 -s EXPORTED_FUNCTIONS="['_main', '_lua_execute']" --llvm-lto 1 -s TOTAL_MEMORY=134217728
+  EMLUA_SHELL_ARGS = -O2 -s EXPORTED_FUNCTIONS="['_main', '_lua_execute']" -s TOTAL_MEMORY=134217728
 else
   EMLUA_SHELL_T = emlua_shell
 endif
