@@ -1,6 +1,7 @@
 import os
+import json
 
-js_lua = '"' + open('js.lua').read().replace('\n', '''\\n''').replace('"', '\\"') + '"'
+js_lua = json.dumps(open('js.lua').read())
 
 f = open('lua.vm.js', 'w')
 f.write(open('lua/src/emlua_shell.js').read())
