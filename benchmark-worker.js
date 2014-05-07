@@ -20,7 +20,7 @@ onmessage = function(event) {
 
   function doIt(code) {
     var start = Date.now();
-    Lua.execute(code);
+    L.execute(code);
     postMessage({
       benchmark: msg.benchmark,
       startup: startup,

@@ -63,7 +63,7 @@
           <textarea id="mytext">
 print('hello' .. ' ' .. 'world!') -- This is Lua!
 
-print(js.run('[0,1,2,3,4,5][3]')) -- Run JS from Lua
+print(window:eval('[0,1,2,3,4,5][3]')) -- Run JS from Lua
 
 -- Interact with the page using Lua
 
@@ -71,15 +71,15 @@ local screen = js.global.screen
 print("you haz " .. (screen.width*screen.height) .. " pixels")
 
 local window = js.global -- global object in JS is the window
-window.alert("hello from lua!")
-window.setTimeout(function() print('hello from lua callback') end, 2500)
+window:alert("hello from lua!")
+window:setTimeout(function() print('hello from lua callback') end, 2500)
 
 local document = js.global.document
 print("this window has title '" .. document.title .. "'")
 
 -- call constructors (global, or as properties of other objects)
-print("i made an ArrayBuffer of size " .. js.new.ArrayBuffer(20).byteLength)
--- print("i made an ArrayBuffer of size " .. js.global.ArrayBuffer.new(20).byteLength)
+print("i made an ArrayBuffer of size " .. js.new(js.global.ArrayBuffer, 20).byteLength)
+-- print("i made an ArrayBuffer of size " .. js.global.ArrayBuffer:new(20).byteLength)
 
 print("time iz " .. js.global.Date.now()) -- call with no arguments
 
@@ -126,7 +126,7 @@ var Module = {
 
 function executeLua(code, clear) {
   if (clear) outputElement.innerHTML = '';
-  Lua.execute(code);
+  L.execute(code);
 }
 </script>
 
