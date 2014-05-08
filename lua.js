@@ -395,15 +395,15 @@ Lua.State.prototype.pushstring = function (str) {
 	this.pushlstring(ptr, str.length);
 };
 Lua.State.prototype.raw_tostring = function(i) {
-	var l = emscripten.allocate(8, "i8",ALLOC_STACK);
+	var l = emscripten.allocate(4, "i32", ALLOC_STACK);
 	var p = Lua.lib.tolstring(this._L, i || -1, l);
-	return Pointer_stringify(p, emscripten.getValue(l, "i8"));
+	return Pointer_stringify(p, emscripten.getValue(l, "i32"));
 };
 // This version calls __tostring metamethod
 Lua.State.prototype.tostring = function(i) {
-	var l = emscripten.allocate(8, "i8",ALLOC_STACK);
+	var l = emscripten.allocate(4, "i32",ALLOC_STACK);
 	var p = this.tolstring(i || -1, l);
-	return Pointer_stringify(p, emscripten.getValue(l, "i8"));
+	return Pointer_stringify(p, emscripten.getValue(l, "i32"));
 };
 Lua.State.prototype.lua_to_js = function(i) {
 	switch(this.type(i)) {
