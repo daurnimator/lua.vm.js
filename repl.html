@@ -115,12 +115,12 @@ var myCodeMirror = CodeMirror.fromTextArea(document.getElementById('mytext'));
 var outputElement = document.getElementById('output')
 var Module = {
   print: function(x) {
-    outputElement.innerHTML = (outputElement.innerHTML ? outputElement.innerHTML + '<br>' : '') + x;
+    outputElement.textContent = (outputElement.textContent ? outputElement.textContent + '\n' : '') + x;
   }
 };
 
 function executeLua(code, clear) {
-  if (clear) outputElement.innerHTML = '';
+  if (clear) outputElement.textContent = '';
   L.execute(code);
 }
 </script>
