@@ -269,6 +269,14 @@ Lua.cfuncs = {
 		L.push(res);
 		return 1;
 	}),
+	__len: emscripten.Runtime.addFunction(function(L){
+		L = new Lua.State(L);
+		var box = L.checkudata(1, "_PROXY_MT");
+		var id = emscripten.getValue(box, "double");
+		var ob = Lua.refs[id];
+		L.push(ob.length);
+		return 1;
+	}),
 	__tostring: emscripten.Runtime.addFunction(function(L){
 		L = new Lua.State(L);
 		var box = L.checkudata(1, "_PROXY_MT");
@@ -329,6 +337,8 @@ Lua.State = function (_L) {
 		this.setfield(-2, "__newindex");
 		this.pushcclosure(Lua.cfuncs.__call, 0);
 		this.setfield(-2, "__call");
+		this.pushcclosure(Lua.cfuncs.__len, 0);
+		this.setfield(-2, "__len");
 		this.pushcclosure(Lua.cfuncs.__tostring, 0);
 		this.setfield(-2, "__tostring");
 		this.pop(1);

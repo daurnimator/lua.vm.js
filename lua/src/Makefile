@@ -52,7 +52,7 @@ ifdef EMSCRIPTEN
   EMLUA_SHELL_T = emlua_shell.js
   EMLUA_SHELL_ARGS = -O2 \
     -s TOTAL_MEMORY=134217728 \
-    -s RESERVED_FUNCTION_POINTERS=6 \
+    -s RESERVED_FUNCTION_POINTERS=7 \
     -s EXPORTED_FUNCTIONS="[ \
         '_lua_absindex',\
         '_lua_arith',\
