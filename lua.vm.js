@@ -9715,7 +9715,9 @@ Lua.Proxy = function (L, i) {
 	// This means we have to attach other methods to the function manually
 	// and return only the first return result
 	function self() {
-		return self.invoke.apply(self, arguments)[0]
+		var args = slice.call(arguments, 0);
+		args.splice(0, 0, this);
+		return self.invoke.apply(self, args)[0]
 	}
 	self.L = L;
 	L.pushvalue(i);
