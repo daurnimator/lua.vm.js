@@ -9614,7 +9614,7 @@ Lua.State.prototype.printStack = function() {
 };
 // Add handy wrappers to make for idiomatic js
 Lua.State.prototype.pushstring = function (str) {
-	var ptr = emscripten.allocate(intArrayFromString(str), 'i8', ALLOC_STACK);
+	var ptr = emscripten.allocate(emscripten.intArrayFromString(str), "i8", ALLOC_STACK);
 	this.pushlstring(ptr, str.length);
 };
 Lua.State.prototype.raw_tostring = function(i) {
