@@ -9414,7 +9414,7 @@ var Lua = exports.Lua = {
 	},
 	refs: [],
 	refs_i: 0,
-}
+};
 
 Lua.Error = function (L, error_index) {
 	this.message = L.tostring(error_index);
@@ -9480,7 +9480,7 @@ Lua.cfuncs = {
 		var top = L.gettop();
 		var thisarg = top>=2?L.lua_to_js(2):null;
 		var args = [];
-		for (var i=3; i<=top;i++) {
+		for (var i=3; i<=top; i++) {
 			args.push(L.lua_to_js(i));
 		}
 		try {
@@ -9538,7 +9538,7 @@ Lua.cfuncs = {
 	// 	L.pushboolean(delete ob[k]);
 	// 	return 1;
 	// }),
-}
+};
 
 // Either wraps existing state; or makes a new one
 Lua.State = function (_L) {
@@ -9571,9 +9571,9 @@ Lua.State = function (_L) {
 		// This level of indirection ensures equal js objects are equal
 		this.createtable(0, 0);
 		this.createtable(0, 1);
-		this.pushstring("v")
-		this.setfield(-2, "__mode")
-		Lua.lib.setmetatable(this._L, -2)
+		this.pushstring("v");
+		this.setfield(-2, "__mode");
+		Lua.lib.setmetatable(this._L, -2);
 		this.setfield(Lua.defines.REGISTRYINDEX, "wrapped");
 
 		// Create 'js' library
@@ -9582,8 +9582,8 @@ Lua.State = function (_L) {
 		this.setfield(-2, "new");
 		this.push(null);
 		this.setfield(-2, "null");
-	 	this.push(global);
-	 	this.setfield(-2, "global");
+		this.push(global);
+		this.setfield(-2, "global");
 		this.setglobal("js");
 
 		this.gc(Lua.defines.GC.RESTART, 0);
@@ -9597,14 +9597,14 @@ Lua.State = function (_L) {
 			var args = slice.call(arguments, 0);
 			args.splice(0, 0, this._L);
 			return func.apply(null, args);
-		}
-	};
+		};
+	}
 	for (var i in Lua.lib) {
 		Lua.State.prototype[i] = wrap(Lua.lib[i]);
-	};
-	for (var i in Lua.auxlib) {
-		Lua.State.prototype[i] = wrap(Lua.auxlib[i]);
-	};
+	}
+	for (var j in Lua.auxlib) {
+		Lua.State.prototype[j] = wrap(Lua.auxlib[j]);
+	}
 })();
 // Add functions that are normally macros
 Lua.State.prototype.pop = function(n) {
@@ -9632,13 +9632,13 @@ Lua.State.prototype.raw_tostring = function(i) {
 	var l = emscripten.allocate(4, "i32", ALLOC_STACK);
 	var p = Lua.lib.tolstring(this._L, i || -1, l);
 	if (p === 0 /* NULL */) return null;
-	return Pointer_stringify(p, emscripten.getValue(l, "i32"));
+	return emscripten.Pointer_stringify(p, emscripten.getValue(l, "i32"));
 };
 // This version calls __tostring metamethod
 Lua.State.prototype.tostring = function(i) {
 	var l = emscripten.allocate(4, "i32",ALLOC_STACK);
 	var p = this.tolstring(i || -1, l);
-	return Pointer_stringify(p, emscripten.getValue(l, "i32"));
+	return emscripten.Pointer_stringify(p, emscripten.getValue(l, "i32"));
 };
 Lua.State.prototype.lua_to_js = function(i) {
 	switch(this.type(i)) {
@@ -9646,7 +9646,7 @@ Lua.State.prototype.lua_to_js = function(i) {
 		case 0: // LUA_TNIL
 			return void 0;
 		case 1: // LUA_TBOOLEAN
-			return this.toboolean(i)!=0;
+			return this.toboolean(i)!==0;
 		case 2: // LUA_TLIGHTUSERDATA
 			return this.touserdata(i);
 		case 3: // LUA_TNUMBER
@@ -9655,15 +9655,12 @@ Lua.State.prototype.lua_to_js = function(i) {
 			return this.raw_tostring(i);
 		case 7: // LUA_TUSERDATA
 			var box = L.testudata(i, "_PROXY_MT");
-			if (box != /* NULL */ 0) {
+			if (box !== /* NULL */ 0) {
 				var id = emscripten.getValue(box, "double");
 				return Lua.refs[id];
 			}
-			// Fallthrough
-		case 5: // LUA_TTABLE
-		case 6: // LUA_TFUNCTION
-		case 8: // LUA_TTHREAD
-		default:
+			/* fall through */
+		default: // LUA_TTABLE, LUA_TFUNCTION, LUA_TTHREAD
 			return new Lua.Proxy(this, i);
 	}
 };
@@ -9706,7 +9703,7 @@ Lua.State.prototype.push = function(ob) {
 	}
 };
 Lua.State.prototype.load = function(code) {
-	if (this.loadbufferx(code, code.length, "input", null) != 0) {
+	if (this.loadbufferx(code, code.length, "input", null) !== 0) {
 		throw new Lua.Error(this, -1);
 	}
 	var r = this.lua_to_js(-1);
@@ -9726,7 +9723,7 @@ Lua.Proxy = function (L, i) {
 	function self() {
 		var args = slice.call(arguments, 0);
 		args.splice(0, 0, this);
-		return self.invoke.apply(self, args)[0]
+		return self.invoke.apply(self, args)[0];
 	}
 	self.L = L;
 	L.pushvalue(i);
@@ -9762,8 +9759,8 @@ Lua.Proxy.invoke = function() {
 	}
 	var top = this.L.gettop();
 	var results=[];
-	for (var i=pre+1; i<=top; i++) {
-		results.push(this.L.lua_to_js(i));
+	for (var j=pre+2; j<=top; j++) {
+		results.push(this.L.lua_to_js(j));
 	}
 	this.L.settop(pre-1);
 	return results;
@@ -9807,10 +9804,10 @@ Lua.init = function() {
 };
 Lua.executeScripts = function(L) {
 	Array.prototype.forEach.call(document.querySelectorAll('script[type=\"text\/lua\"]'), function(tag) {
-		L.execute(tag.innerHTML)
+		L.execute(tag.innerHTML);
 	});
 };
-if (!Module.noInitialRun) Lua.init();
+if (!emscripten.noInitialRun) Lua.init();
 
-return Lua
-})(this, this, Module)
+return Lua;
+})(this, this, Module);
