@@ -9254,6 +9254,7 @@ var Lua = exports.Lua = {
 	defines: {
 		REGISTRYINDEX: /*FIRSTPSEUDOIDX*/ ( - /*LUAI_MAXSTACK*/1000000 - 1000 ),
 		RIDX_GLOBALS: 2,
+		MULTRET: -1,
 		NOREF: -2,
 		GC: {
 			STOP: 0,
@@ -9749,7 +9750,7 @@ Lua.Proxy.invoke = function() {
 	for (var i=0; i<arguments.length; i++) {
 		this.L.push(arguments[i]);
 	}
-	if (this.L.pcallk(arguments.length, -1, 0, null) !== 0) {
+	if (this.L.pcallk(arguments.length, Lua.defines.MULTRET, 0, null) !== 0) {
 		var err = new Lua.Error(this.L, -1);
 		this.L.settop(pre-1);
 		throw err;
