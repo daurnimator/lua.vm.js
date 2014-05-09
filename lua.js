@@ -5,24 +5,24 @@ apply = (function(){}).apply;
 
 // applying arguments to new isn't easy with js.....
 function new_(a, b, c, d, e, f, g, h, i) {
-  switch (arguments.length) {
-    case 0:  return new this();
-    case 1:  return new this(a);
-    case 2:  return new this(a, b);
-    case 3:  return new this(a, b, c);
-    case 4:  return new this(a, b, c, d);
-    case 5:  return new this(a, b, c, d, e);
-    case 6:  return new this(a, b, c, d, e, f);
-    case 7:  return new this(a, b, c, d, e, f, g);
-    case 8:  return new this(a, b, c, d, e, f, g, h);
-    case 9:  return new this(a, b, c, d, e, f, g, h, i);
-    default:
-    	// Attempt the theorectically equivalent way
-    	// Native objects often detect this and throw;
-    	// luckily there aren't many native objects that take >9 arguments; so this case is rare
-    	var obj = Object.create(this.prototype);
-	    ret = this.apply(obj, arguments)
-	  	return (typeof ret === 'object' && ret !== null)?ret:obj;
+	switch (arguments.length) {
+		case 0: return new this();
+		case 1: return new this(a);
+		case 2: return new this(a, b);
+		case 3: return new this(a, b, c);
+		case 4: return new this(a, b, c, d);
+		case 5: return new this(a, b, c, d, e);
+		case 6: return new this(a, b, c, d, e, f);
+		case 7: return new this(a, b, c, d, e, f, g);
+		case 8: return new this(a, b, c, d, e, f, g, h);
+		case 9: return new this(a, b, c, d, e, f, g, h, i);
+		default:
+			// Attempt the theorectically equivalent way
+			// Native objects often detect this and throw;
+			// luckily there aren't many native objects that take >9 arguments; so this case is rare
+			var obj = Object.create(this.prototype);
+			var ret = this.apply(obj, arguments);
+			return (typeof ret === 'object' && ret !== null)?ret:obj;
 	}
 }
 
