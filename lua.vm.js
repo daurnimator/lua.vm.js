@@ -9630,6 +9630,7 @@ Lua.State.prototype.pushstring = function (str) {
 Lua.State.prototype.raw_tostring = function(i) {
 	var l = emscripten.allocate(4, "i32", ALLOC_STACK);
 	var p = Lua.lib.tolstring(this._L, i || -1, l);
+	if (p === 0 /* NULL */) return null;
 	return Pointer_stringify(p, emscripten.getValue(l, "i32"));
 };
 // This version calls __tostring metamethod
