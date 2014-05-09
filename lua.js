@@ -1,7 +1,7 @@
-Lua = (function(global, emscripten){
+(function(exports, global, emscripten){
 /* Utility functions */
-slice = [].slice;
-apply = (function(){}).apply;
+var slice = [].slice;
+var apply = (function(){}).apply;
 
 // applying arguments to new isn't easy with js.....
 function new_(a, b, c, d, e, f, g, h, i) {
@@ -27,7 +27,7 @@ function new_(a, b, c, d, e, f, g, h, i) {
 }
 
 /* */
-var Lua = {
+var Lua = exports.Lua = {
 	defines: {
 		REGISTRYINDEX: /*FIRSTPSEUDOIDX*/ ( - /*LUAI_MAXSTACK*/1000000 - 1000 ),
 		RIDX_GLOBALS: 2,
@@ -563,7 +563,7 @@ Lua.Proxy.set = function(key, value) {
 
 Lua.init = function() {
 	// Create arbitraily "primary" lua state
-	L = new Lua.State();
+	var L = exports.L = new Lua.State();
 	L.execute({{{ JS_LUA }}});
 	if (typeof window === 'object') {
 		// Run script tags on page
@@ -582,4 +582,4 @@ Lua.executeScripts = function(L) {
 if (!Module.noInitialRun) Lua.init();
 
 return Lua
-})(this, Module)
+})(this, this, Module)
