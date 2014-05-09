@@ -9642,6 +9642,7 @@ Lua.State.prototype.tostring = function(i) {
 };
 Lua.State.prototype.lua_to_js = function(i) {
 	switch(this.type(i)) {
+		case -1: // LUA_TNONE
 		case 0: // LUA_TNIL
 			return void 0;
 		case 1: // LUA_TBOOLEAN
@@ -9662,6 +9663,7 @@ Lua.State.prototype.lua_to_js = function(i) {
 		case 5: // LUA_TTABLE
 		case 6: // LUA_TFUNCTION
 		case 8: // LUA_TTHREAD
+		default:
 			return new Lua.Proxy(this, i);
 	}
 };
