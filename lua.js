@@ -501,6 +501,7 @@ Lua.Proxy = function (L, i) {
 	self.ref = L.ref(Lua.defines.REGISTRYINDEX);
 	// Add methods
 	self.invoke   = Lua.Proxy.invoke;
+	self.push     = Lua.Proxy.push;
 	self.free     = Lua.Proxy.free;
 	self.toString = Lua.Proxy.toString;
 	self.get      = Lua.Proxy.get;
@@ -508,13 +509,16 @@ Lua.Proxy = function (L, i) {
 
 	return self;
 };
+Lua.Proxy.push = function() {
+	this.L.rawgeti(Lua.defines.REGISTRYINDEX, this.ref);
+};
 Lua.Proxy.free = function() {
 	this.L.unref(Lua.defines.REGISTRYINDEX, this.ref);
 	this.ref = Lua.defines.NOREF;
 };
 Lua.Proxy.invoke = function() {
 	var pre = this.L.gettop();
-	this.L.rawgeti(Lua.defines.REGISTRYINDEX, this.ref);
+	this.push();
 	if (this.L.checkstack(arguments.length)===0) throw "Out of stack space";
 	for (var i=0; i<arguments.length; i++) {
 		this.L.push(arguments[i]);
@@ -531,13 +535,13 @@ Lua.Proxy.invoke = function() {
 	return results;
 };
 Lua.Proxy.toString = function() {
-	this.L.rawgeti(Lua.defines.REGISTRYINDEX, this.ref);
+	this.push();
 	var s = this.L.tostring();
 	this.L.pop(2);
 	return s;
 };
 Lua.Proxy.get = function(key) {
-	this.L.rawgeti(Lua.defines.REGISTRYINDEX, this.ref);
+	this.push();
 	this.L.push(key);
 	this.L.gettable(-2);
 	var res = this.L.lua_to_js(-1);
@@ -545,7 +549,7 @@ Lua.Proxy.get = function(key) {
 	return res;
 };
 Lua.Proxy.set = function(key, value) {
-	this.L.rawgeti(Lua.defines.REGISTRYINDEX, this.ref);
+	this.push();
 	this.L.push(key);
 	this.L.push(value);
 	this.L.settable(-3);
