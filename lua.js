@@ -185,7 +185,7 @@ var Lua = exports.Lua = {
 		setmetatable:      emscripten.cwrap('luaL_setmetatable',     null,     ["*", "string"]),
 		testudata:         emscripten.cwrap('luaL_testudata',        "*",      ["*", "int", "string"]),
 		tolstring:         emscripten.cwrap('luaL_tolstring',        "char*",  ["*", "int", "int*"]),
-		// traceback
+		traceback:         emscripten.cwrap('luaL_traceback',        null,     ["*", "*", "string", "int"]),
 		unref:             emscripten.cwrap('luaL_unref',            "char*",  ["*", "int", "int*"]),
 		// where
 	},
@@ -195,6 +195,10 @@ var Lua = exports.Lua = {
 
 Lua.Error = function (L, error_index) {
 	this.message = L.tostring(error_index);
+	// Get lua stack trace
+	L.traceback(L._L, this.message, 1);
+	this.lua_stack = L.raw_tostring(1);
+	L.pop(1);
 };
 Lua.Error.prototype = new Error();
 Lua.Error.prototype.name = "Lua.Error";
@@ -315,6 +319,12 @@ Lua.cfuncs = {
 	// 	L.pushboolean(delete ob[k]);
 	// 	return 1;
 	// }),
+	// Our error handler
+	traceback: emscripten.Runtime.addFunction(function(L){
+		L = new Lua.State(L);
+		L.pushjs(new Lua.Error(L, 1));
+		return 1;
+	}),
 };
 
 // Either wraps existing state; or makes a new one
@@ -523,15 +533,16 @@ Lua.Proxy.free = function() {
 	this.ref = Lua.defines.NOREF;
 };
 Lua.Proxy.invoke = function() {
+	if (this.L.checkstack(1+1+arguments.length)===0) throw "Out of stack space";
 	var pre = this.L.gettop();
+	this.L.pushcclosure(Lua.cfuncs.traceback, 0);
 	this.push();
-	if (this.L.checkstack(arguments.length)===0) throw "Out of stack space";
 	for (var i=0; i<arguments.length; i++) {
 		this.L.push(arguments[i]);
 	}
 	if (this.L.pcallk(arguments.length, Lua.defines.MULTRET, 0, null) !== 0) {
-		var err = new Lua.Error(this.L, -1);
-		this.L.settop(pre-1);
+		var err = this.L.lua_to_js(-1);
+		this.L.settop(pre);
 		throw err;
 	}
 	var top = this.L.gettop();
@@ -539,12 +550,12 @@ Lua.Proxy.invoke = function() {
 	for (var j=pre+2; j<=top; j++) {
 		results.push(this.L.lua_to_js(j));
 	}
-	this.L.settop(pre-1);
+	this.L.settop(pre);
 	return results;
 };
 Lua.Proxy.toString = function() {
 	this.push();
-	var s = this.L.tostring();
+	var s = this.L.tostring(-1);
 	this.L.pop(2);
 	return s;
 };
