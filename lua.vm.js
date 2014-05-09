@@ -9699,6 +9699,9 @@ Lua.State.prototype.push = function(ob) {
 		case "undefined":
 			return this.pushnil();
 		default:
+			if (typeof ob === "function" && ob.L && ob.L._L === this._L) { // Is Lua.Proxy object for this state
+				return ob.push();
+			}
 			return this.pushjs(ob);
 	}
 };
