@@ -9415,8 +9415,8 @@ var Lua = exports.Lua = {
 	refs_i: 0,
 }
 
-Lua.Error = function (e) {
-	this.message = e;
+Lua.Error = function (L, error_index) {
+	this.message = L.tostring(error_index);
 };
 Lua.Error.prototype = new Error();
 Lua.Error.prototype.name = "Lua.Error";
@@ -9701,7 +9701,7 @@ Lua.State.prototype.push = function(ob) {
 };
 Lua.State.prototype.load = function(code) {
 	if (this.loadbufferx(code, code.length, "input", null) != 0) {
-		throw new Lua.Error(this.tostring(-1));
+		throw new Lua.Error(this, -1);
 	}
 	var r = this.lua_to_js(-1);
 	this.pop(1);
@@ -9750,7 +9750,9 @@ Lua.Proxy.invoke = function() {
 		this.L.push(arguments[i]);
 	}
 	if (this.L.pcallk(arguments.length, -1, 0, null) !== 0) {
-		throw new Lua.Error(this.L.tostring());
+		var err = new Lua.Error(this.L, -1);
+		this.L.settop(pre-1);
+		throw err;
 	}
 	var top = this.L.gettop();
 	var results=[];
