@@ -66,7 +66,6 @@ ifdef EMSCRIPTEN
         '_lua_createtable',\
         '_lua_dump',\
         '_lua_error',\
-        '_lua_execute',\
         '_lua_gc',\
         '_lua_getallocf',\
         '_lua_getctx',\
