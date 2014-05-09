@@ -9663,6 +9663,27 @@ Lua.State.prototype.lua_to_js = function(i) {
 			return new Lua.Proxy(this, i);
 	}
 };
+Lua.State.prototype.pushjs = function(ob) {
+	var i = Lua.refs.indexOf(ob);
+	if (i === -1) {
+		i = Lua.refs_i++;
+		Lua.refs[i] = ob;
+		var box = this.newuserdata(8);
+		emscripten.setValue(box, i, "double");
+		this.setmetatable("_PROXY_MT");
+		// Save in lua table
+		this.getfield(Lua.defines.REGISTRYINDEX, "wrapped");
+		this.pushnumber(i);
+		this.pushvalue(-3);
+		this.settable(-3);
+		this.pop(1); // pop "wrapped"
+	} else {
+		this.getfield(Lua.defines.REGISTRYINDEX, "wrapped");
+		this.pushnumber(i);
+		this.gettable(-2);
+		this.remove(this.gettop()-2+1); // Remove "wrapped" from the stack; remove can't take a psuedo index
+	}
+};
 Lua.State.prototype.push = function(ob) {
 	switch (typeof ob) {
 		case "boolean":
@@ -9674,26 +9695,7 @@ Lua.State.prototype.push = function(ob) {
 		case "undefined":
 			return this.pushnil();
 		default:
-			var i = Lua.refs.indexOf(ob);
-			if (i === -1) {
-				i = Lua.refs_i++;
-				Lua.refs[i] = ob;
-				var box = this.newuserdata(8);
-				emscripten.setValue(box, i, "double");
-				this.setmetatable("_PROXY_MT");
-				// Save in lua table
-				this.getfield(Lua.defines.REGISTRYINDEX, "wrapped");
-				this.pushnumber(i);
-				this.pushvalue(-3);
-				this.settable(-3);
-				this.pop(1); // pop "wrapped"
-			} else {
-				this.getfield(Lua.defines.REGISTRYINDEX, "wrapped");
-				this.pushnumber(i);
-				this.gettable(-2);
-				this.remove(this.gettop()-2+1); // Remove "wrapped" from the stack; remove can't take a psuedo index
-			}
-			return;
+			return this.pushjs(ob);
 	}
 };
 Lua.State.prototype.load = function(code) {
