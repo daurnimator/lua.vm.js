@@ -15,7 +15,7 @@ This began as an experiment to see how fast the Lua VM can run on the web. That 
 Building
 ========
 
-To build, run `emmake make generic` in the `lua` subdirectory
+To build, run `make emscripten` in the `lua` subdirectory
 
 
 License
