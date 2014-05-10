@@ -21,5 +21,8 @@ To build, run `make emscripten` in the `lua` subdirectory
 License
 =======
 
-New stuff in this project is (C) Alon Zakai, MIT license. All other code in this repo - Lua, codemirror - is also MIT licensed.
+This project is MIT/X11 licensed. Please see the COPYING file in the source package for more information.
+Copyright (c) 2013 Alon Zakai (kripken)
+Copyright (c) 2014 Daurnimator
 
+Lua is licensed under MIT.
