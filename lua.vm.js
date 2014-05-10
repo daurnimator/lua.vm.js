@@ -9254,6 +9254,7 @@ var Lua = exports.Lua = {
 	defines: {
 		REGISTRYINDEX: /*FIRSTPSEUDOIDX*/ ( - /*LUAI_MAXSTACK*/1000000 - 1000 ),
 		RIDX_GLOBALS: 2,
+		RIDX_MAINTHREAD: 1,
 		MULTRET: -1,
 		NOREF: -2,
 		GC: {
@@ -9269,6 +9270,18 @@ var Lua = exports.Lua = {
 			ISRUNNING: 9,
 			GEN: 10,
 			INC: 11,
+		},
+		T: {
+			NONE: -1,
+			NIL: 0,
+			BOOLEAN: 1,
+			LIGHTUSERDATA: 2,
+			NUMBER: 3,
+			STRING: 4,
+			TABLE: 5,
+			FUNCTION: 6,
+			USERDATA: 7,
+			THREAD: 8,
 		},
 	},
 	lib: {
