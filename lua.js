@@ -413,6 +413,9 @@ Lua.State.prototype.pop = function(n) {
 Lua.State.prototype.isnil = function(n) {
 	return this.type(n) === 0;
 };
+Lua.State.prototype.isnoneornil = function(n) {
+	return this.type(n) <= 0;
+};
 Lua.State.prototype.getmetatable = function(n) {
 	this.getfield(Lua.defined.REGISTRYINDEX, n);
 };
