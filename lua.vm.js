@@ -9816,7 +9816,7 @@ Lua.Proxy.set = function(key, value) {
 Lua.init = function() {
 	// Create arbitraily "primary" lua state
 	var L = exports.L = new Lua.State();
-	L.execute("");
+	L.execute("-- Make window object a global\nwindow = js.global;\n\n-- Iterates from 0 to collection.length-1\nlocal function js_inext(collection, i)\n  i = i + 1\n  if i >= collection.length then return nil end\n  return i, collection[i]\nend\nfunction js.ipairs(collection)\n  return js_inext, collection, -1\nend\n\nlocal function load_lua_over_http(url)\n\tlocal xhr = js.new(window.XMLHttpRequest)\n\txhr:open(\"GET\", url, false) -- Synchronous\n\txhr:send()\n\tif xhr.status == 200 then\n\t\treturn load(xhr.responseText, url)\n\telse\n\t\treturn nil, \"HTTP GET \" .. xhr.statusText .. \": \" .. url\n\tend\nend\npackage.path = \"\"\npackage.cpath = \"\"\ntable.insert(package.searchers, function (mod_name)\n\tif not mod_name:match(\"/\") then\n\t\tlocal full_url = mod_name:gsub(\"%.\", \"/\") .. \".lua\"\n\t\tlocal func, err = load_lua_over_http(full_url)\n\t\tif func ~= nil then return func end\n\n\t\tlocal full_url = mod_name:gsub(\"%.\", \"/\") .. \"/init.lua\"\n\t\tlocal func, err2 = load_lua_over_http(full_url)\n\t\tif func ~= nil then return func end\n\n\t\treturn \"\\n    \" .. err .. \"\\n    \" .. err2\n\tend\nend)\ntable.insert(package.searchers, function (mod_name)\n\tif mod_name:match(\"^https?://\") then\n\t\tlocal func, err = load_lua_over_http(mod_name)\n\t\tif func == nil then return \"\\n    \" .. err end\n\t\treturn func\n\tend\nend)\n");
 	if (typeof window === 'object') {
 		// Run script tags on page
 		var onload = window.onload;
