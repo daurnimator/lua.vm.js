@@ -9655,14 +9655,14 @@ Lua.State.prototype.pushstring = function (str) {
 	this.pushlstring(chars, chars.length);
 };
 Lua.State.prototype.raw_tostring = function(i) {
-	var l = emscripten.allocate(4, "i32", ALLOC_STACK);
+	var l = emscripten.allocate(4, "i32", emscripten.ALLOC_STACK);
 	var p = Lua.lib.tolstring(this._L, i || -1, l);
 	if (p === 0 /* NULL */) return null;
 	return emscripten.Pointer_stringify(p, emscripten.getValue(l, "i32"));
 };
 // This version calls __tostring metamethod
 Lua.State.prototype.tostring = function(i) {
-	var l = emscripten.allocate(4, "i32",ALLOC_STACK);
+	var l = emscripten.allocate(4, "i32", emscripten.ALLOC_STACK);
 	var p = this.tolstring(i || -1, l);
 	return emscripten.Pointer_stringify(p, emscripten.getValue(l, "i32"));
 };
