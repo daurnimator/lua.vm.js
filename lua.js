@@ -108,7 +108,7 @@ var Lua = exports.Lua = {
 		// pushfstring
 		// pushinteger
 		pushlightuserdata: emscripten.cwrap('lua_pushlightuserdata', null,     ["*", "*"]),
-		pushlstring:       emscripten.cwrap('lua_pushlstring',       null,     ["*", "char*", "int"]),
+		pushlstring:       emscripten.cwrap('lua_pushlstring',       null,     ["*", "array", "int"]),
 		pushnil:           emscripten.cwrap('lua_pushnil',           null,     ["*"]),
 		pushnumber:        emscripten.cwrap('lua_pushnumber',        null,     ["*", "double"]),
 		// pushstring
@@ -179,7 +179,7 @@ var Lua = exports.Lua = {
 		// getsubtable
 		// gsub
 		// len
-		loadbufferx:       emscripten.cwrap('luaL_loadbufferx',      "int",    ["*", "string", "int", "string", "string"]),
+		loadbufferx:       emscripten.cwrap('luaL_loadbufferx',      "int",    ["*", "array", "int", "string", "string"]),
 		// loadfilex
 		// loadstring
 		newmetatable:      emscripten.cwrap('luaL_newmetatable',     "int",    ["*", "string"]),
@@ -428,8 +428,8 @@ Lua.State.prototype.printStack = function() {
 };
 // Add handy wrappers to make for idiomatic js
 Lua.State.prototype.pushstring = function (str) {
-	var ptr = emscripten.allocate(emscripten.intArrayFromString(str), "i8", ALLOC_STACK);
-	this.pushlstring(ptr, str.length);
+	var chars = emscripten.intArrayFromString(str, true);
+	this.pushlstring(chars, chars.length);
 };
 Lua.State.prototype.raw_tostring = function(i) {
 	var l = emscripten.allocate(4, "i32", ALLOC_STACK);
@@ -506,7 +506,8 @@ Lua.State.prototype.push = function(ob) {
 	}
 };
 Lua.State.prototype.load = function(code) {
-	if (this.loadbufferx(code, code.length, "input", null) !== 0) {
+	var chars = emscripten.intArrayFromString(code, true);
+	if (this.loadbufferx(chars, chars.length, "input", null) !== 0) {
 		throw new Lua.Error(this, -1);
 	}
 	var r = this.lua_to_js(-1);
