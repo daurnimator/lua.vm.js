@@ -527,7 +527,7 @@ Lua.Proxy = function (L, i) {
 	function self() {
 		var args = slice.call(arguments, 0);
 		args.splice(0, 0, this);
-		return self.invoke.apply(self, args)[0];
+		return self.invoke(args, 1)[0];
 	}
 	self.L = L;
 	L.pushvalue(i);
@@ -549,15 +549,18 @@ Lua.Proxy.free = function() {
 	this.L.unref(Lua.defines.REGISTRYINDEX, this.ref);
 	this.ref = Lua.defines.NOREF;
 };
-Lua.Proxy.invoke = function() {
+Lua.Proxy.invoke = function(args, n_results) {
 	if (this.L.checkstack(1+1+arguments.length)===0) throw "Out of stack space";
+	if ((n_results === void 0) || (n_results === null)) {
+		n_results = Lua.defines.MULTRET;
+	}
 	var pre = this.L.gettop();
 	this.L.pushcclosure(Lua.cfuncs.traceback, 0);
 	this.push();
-	for (var i=0; i<arguments.length; i++) {
-		this.L.push(arguments[i]);
+	for (var i=0; i<args.length; i++) {
+		this.L.push(args[i]);
 	}
-	if (this.L.pcallk(arguments.length, Lua.defines.MULTRET, 0, null) !== 0) {
+	if (this.L.pcallk(args.length, n_results, 0, null) !== 0) {
 		var err = this.L.lua_to_js(-1);
 		this.L.settop(pre);
 		throw err;
