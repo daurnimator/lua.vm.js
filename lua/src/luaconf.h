@@ -148,6 +148,14 @@
 #define LUA_API __declspec(dllimport)
 #endif						/* } */
 
+#elif defined(EMSCRIPTEN)
+
+/*
+ * Forces LLVM to not dead-code-eliminate a function. This also
+ * exports the function, as if you added it to EXPORTED_FUNCTIONS.
+ */
+#define LUA_API     __attribute__((used)) extern
+
 #else				/* }{ */
 
 #define LUA_API		extern
