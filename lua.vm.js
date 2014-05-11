@@ -9728,9 +9728,9 @@ Lua.State.prototype.push = function(ob) {
 			return this.pushjs(ob);
 	}
 };
-Lua.State.prototype.load = function(code) {
+Lua.State.prototype.load = function(code, name, mode) {
 	var chars = emscripten.intArrayFromString(code, true);
-	if (this.loadbufferx(chars, chars.length, "input", null) !== 0) {
+	if (this.loadbufferx(chars, chars.length, name, mode) !== 0) {
 		throw new Lua.Error(this, -1);
 	}
 	var r = this.lua_to_js(-1);
