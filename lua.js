@@ -510,14 +510,14 @@ Lua.State.prototype.load = function(code, name, mode) {
 	if (this.loadbufferx(chars, chars.length, name, mode) !== 0) {
 		throw new Lua.Error(this, -1);
 	}
-	var r = this.lua_to_js(-1);
+	var r = new Lua.Proxy(this, -1);
 	this.pop(1);
 	return r;
 };
 Lua.State.prototype.execute = function(code) {
-	var func = this.load(code);
-	var args = slice.call(arguments,1);
-	return func.call.apply(func, args);
+	var proxy = this.load(code);
+	var args = slice.call(arguments, 1);
+	return proxy.invoke(args);
 };
 
 Lua.Proxy = function (L, i) {
