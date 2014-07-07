@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>lua.vm.js</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Le styles -->
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <style>
+      body {
+        padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
+      }
+    </style>
+    <link href="css/bootstrap-responsive.css" rel="stylesheet">
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="js/html5shiv.js"></script>
+    <![endif]-->
+  </head>
+
+  <body>
+
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+          <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="brand" href="#">lua.vm.js</a>
+          <div class="nav-collapse collapse">
+            <ul class="nav">
+              <li class="active"><a href="lua.vm.js.html">Benchmarks+FAQ</a></li>
+              <li><a href="repl.html">REPL</a></li>
+              <li><a href="script_example.html">Script Example</a></li>
+            </ul>
+          </div><!--/.nav-collapse -->
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+
+      <div class="hero-unit">
+        <h1>The Lua VM, on the Web</h1>
+        <br>
+        <p>This is an experiment in running <a href="http://www.lua.org/">Lua</a> on the web, by porting the Lua C implementation to JavaScript using <a href="http://emscripten.org">Emscripten</a>.</p>
+        <br>
+        <p><a href="#" class="btn btn-primary btn-large " onclick="run(); return false" id="the_button">Measure how fast your browser can run a VM in a VM &raquo;</a></p>
+      </div>
+
+      <div class="row-fluid">
+        <div class="span">
+          <h3>Individual Benchmark Results</h3>
+            <table class="table table-striped table-bordered table-hover">
+              <thead>
+                <tr>
+                  <th>Benchmark</th>
+                  <th><div class="text-center">Result</div></th>
+                  <th>Scale</th>
+                  <th>What it measures</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>binarytrees</td>
+                  <td id="binarytrees-cell"><div id="binarytrees-output" class="text-center"></div></td>
+                  <td>seconds (lower numbers are better)</td>
+                  <td>GC performance</td>
+                </tr>
+                <tr>
+                  <td>scimark</td>
+                  <td id="scimark-cell"><div id="scimark-output" class="text-center"></div></td>
+                  <td>MFLOPS (higher numbers are better)</td>
+                  <td>numeric computation performance</td>
+                </tr>
+                <tr>
+                  <td>warm startup</td>
+                  <td id="startup-cell"><div id="startup-output" class="text-center"></div></td>
+                  <td>seconds (lower numbers are better)</td>
+                  <td>how long it takes the VM to be ready to run, after it was previously run</td>
+                </tr>
+              </tbody>
+            </table>
+        </div>
+      </div>
+
+      <div class="row-fluid">
+        <div class="span">
+          <h3>FAQ</h3>
+          <h4>Are you really porting the entire Lua VM?</h4>
+          <p>Yes: The entire Lua 5.2.3 codebase written in C is compiled to JavaScript here, including a full incremental GC and everything else.
+             It fits in 170K of gzipped JavaScript.</p>
+          <h4>How can a VM running in a VM be fast?</h4>
+          <p>Lua is implemented in portable C. It is possible to run C compiled to JavaScript at speeds
+             <a href="http://arstechnica.com/information-technology/2013/05/native-level-performance-on-the-web-a-brief-examination-of-asm-js/">approaching that of a native build</a> (using the <a href="http://asmjs.org/">asm.js</a> subset of
+             JavaScript), which means that you can
+             in principle run C code that happens to implement a VM at high speed as well. Of course this is theoretical until it is actually attempted - that is the point
+             of this project.</p>
+          <h4>What do the numbers here mean?</h4>
+          <p>The individual benchmark results are reported in their native units, and have short descriptions in the table. The final combined score is more
+             abstract, it is basically a normalized mean of the individual numbers, where higher numbers are better. The final score is intended to give a quick
+             summarizing number for comparison purposes.</p>
+          <h4>I got [X] on my machine, how does that compare to other results?</h4>
+          <p>As one datapoint, on a 64-bit Linux machine I get 732 for Firefox Nightly and 454 for Chrome Dev (as of Jan 6, 2014).</p>
+          <p>Comparing individual results to a native build of Lua, in Firefox the Lua VM runs at 64% of the speed of the native build.</p>
+          <p>If you want to compare the results to a native build on your machine, you can do so as follows:
+             Grab <a href="http://www.lua.org/download.html">Lua 5.2.3</a> (the version compiled here to JavaScript), build it natively,
+             and run the same benchmarks (<a href="binarytrees.lua">binarytrees</a>, <a href="scimark.lua">scimark</a>). To run them,
+             execute <code>lua scimark.lua</code> and <code>lua binarytrees.lua 14.72</code> (don't forget the second argument in binarytrees).</p>
+          <h4>What about <a href="http://luajit.org/">LuaJIT</a>?</h4>
+          <p>This project ports Lua, not LuaJIT. LuaJIT is more challenging to port, because in addition to being a JIT, its interpreter is in
+             optimized handwritten assembly. This is great for speed but makes things trickier when cross-compiling to a new platform.</p>
+          <p>LuaJIT is significantly faster than Lua, so it is even more significantly faster than this port to the web. However, it's important
+             to remember that even without LuaJIT, Lua is relatively fast compared to most other dynamic languages, like Python and Ruby, that
+             are very useful in many cases even without blazing speed.</p>
+          <h4>How do I build the Lua VM in JavaScript?</h4>
+          <p>Run <code>make emscripten</code>
+             in <code>lua/</code> in this repo, then run <code>build.py</code> in the top dir.</p>
+          <h4>Can I use this to write web pages in Lua?</h4>
+          <p>Work to connect Lua to the rest of the web environment is in progress, see the <a href="repl.html">REPL</a>
+             and <a href="script_example.html">script example</a> pages.
+          <p>I (kripken) am mainly interested in the performance aspect of this project, hopefully others will contribute to the scripting aspect.</p>
+        </div>
+      </div>
+
+    </div> <!-- /container -->
+
+    <script>
+var ran = false;
+function run() {
+  if (ran) return;
+  ran = true;
+
+  var theButton = document.getElementById('the_button');
+  theButton.innerHTML = 'Running benchmarks... (this can take a while)';
+  theButton.classList.remove('btn-primary');
+  theButton.classList.add('btn-warning');
+
+  var jobs = [
+    {
+      benchmark: 'binarytrees',
+      args: ['binarytrees.lua'],
+      calculate: function() {
+        return this.msg.runtime/1000;
+      },
+      normalized: function() {
+        return (20.308/this.calculate());
+      },
+    },
+    {
+      benchmark: 'scimark',
+      args: ['scimark.lua'],
+      calculate: function() {
+        return /\nSciMark +([\d\.]+)/.exec(this.msg.output)[1]; 
+      },
+      normalized: function() {
+        return (this.calculate()/3.19);
+      },
+    },
+    { // do startup last so there is no network access, and can see previous
+      benchmark: 'startup',
+      args: null,
+      calculate: function() {
+        var startups = jobs.map(function(job) { return job.msg.startup });
+        startups.sort(function(x, y) { return x - y });
+        return startups[Math.floor((startups.length-1)/2)]/1000;
+      },
+      normalized: function() {
+        return 0.10/Math.max(this.calculate(), 1/60); // resolution: 1 frame
+      },
+    }
+  ];
+
+  function finalCalculation() {
+    // normalize based on experimental data
+    var normalized = jobs.map(function(job) { return 100*job.normalized() });
+    console.log('normalized values: ' + normalized);
+    return Math.round(normalized.reduce(function(x, y) { return x + y }, 0));
+  }
+
+  var curr = 0;
+  function runJob() {
+    var job = jobs[curr++];
+    if (!job) {
+      theButton.innerHTML = 'Score: <strong>' + finalCalculation() + '</strong> (higher numbers are better)';
+      theButton.classList.remove('btn-warning');
+      theButton.classList.add('btn-success');
+      return;
+    }
+    document.getElementById(job.benchmark + '-output').innerHTML = '<b>(..running..)</b>';
+      document.getElementById(job.benchmark + '-cell').style = 'background-color: #ffddaa';
+    var worker = new Worker('benchmark-worker.js');
+    worker.onmessage = function(event) {
+      var msg = event.data;
+      console.log(JSON.stringify(msg));
+      if (msg.benchmark != job.benchmark) throw 'invalid data from benchmark worker';
+      job.msg = msg;
+      document.getElementById(job.benchmark + '-output').innerHTML = '<b>' + job.calculate() + '</b>';
+      document.getElementById(job.benchmark + '-cell').style = 'background-color: #bbccff';
+      runJob();
+    };
+    console.log('requesting benchmark ' + job.benchmark);
+    worker.postMessage({
+      benchmark: job.benchmark,
+      args: job.args
+    });
+  }
+  runJob();
+}
+    </script>
+
+    <a href="https://github.com/kripken/lua.vm.js"><img style="position: absolute; top: 35px; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a>
+
+  </body>
+</html>
+

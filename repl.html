@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>lua.vm.js REPL</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Le styles -->
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <style>
+      body {
+        padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
+      }
+    </style>
+    <link href="css/bootstrap-responsive.css" rel="stylesheet">
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="js/html5shiv.js"></script>
+    <![endif]-->
+
+    <!-- codemirror -->
+    <script src="js/codemirror.js"></script>
+    <link rel="stylesheet" href="css/codemirror.css">
+    <script src="js/lua.js"></script>
+
+  </head>
+
+  <body>
+
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+          <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="brand" href="lua.vm.js.html">lua.vm.js</a>
+          <div class="nav-collapse collapse">
+            <ul class="nav">
+              <li><a href="lua.vm.js.html">Benchmarks+FAQ</a></li>
+              <li class="active"><a href="repl.html">REPL</a></li>
+              <li><a href="script_example.html">Script Example</a></li>
+            </ul>
+          </div><!--/.nav-collapse -->
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+
+      <div class="hero-unit">
+        <h2>Lua REPL</h2>
+        <p>This is a <a href="http://en.wikipedia.org/wiki/Read%E2%80%93eval%E2%80%93print_loop">REPL</a> for Lua. Press
+           the button to execute the code in the editor below. You can also modify the code and run it again.</p>
+      </div>
+
+      <div class="row">
+        <div class="span7" border=1>
+          <textarea id="mytext">
+print('hello' .. ' ' .. 'world!') -- This is Lua!
+
+print(js.global:eval('[0,1,2,3,4,5][3]')) -- Run JS from Lua
+
+-- Interact with the page using Lua
+
+local screen = js.global.screen
+print("you haz " .. (screen.width*screen.height) .. " pixels")
+
+local window = js.global -- global object in JS is the window
+window:alert("hello from lua!")
+window:setTimeout(function() print('hello from lua callback') end, 2500)
+
+local document = js.global.document
+print("this window has title '" .. document.title .. "'")
+
+-- call constructors (global, or as properties of other objects)
+print("i made an ArrayBuffer of size " .. js.new(js.global.ArrayBuffer, 20).byteLength)
+-- print("i made an ArrayBuffer of size " .. js.global.ArrayBuffer:new(20).byteLength)
+
+print("time iz " .. js.global.Date.now()) -- call with no arguments
+
+print('done!')
+</textarea>
+        </div>
+        <div class="span5">
+          <h4>output</h4>
+          <pre id="output"></pre>
+        </div>
+      </div>
+
+      <p><a href="#" class="btn btn-primary btn-large " onclick="executeLua(myCodeMirror.getValue(), true); return false" id="the_button">Execute &raquo;</a></p>
+
+      <div class="row-fluid">
+        <div class="span">
+          <h3>Status</h3>
+          <p>The stuff you see in the example above works, which includes using JavaScript objects from
+             Lua as if they were Lua objects, calling the DOM, callbacks into Lua, etc. And as mentioned on
+             the <a href="lua.vm.js.html">main page</a>, this uses the compiled Lua VM, so it includes all
+             the normal Lua languages features, and it's compiled into asm.js so it can have reasonable performance.</p>
+        </div>
+      </div>
+
+    </div> <!-- /container -->
+
+<script>
+// CodeMirror
+var myCodeMirror = CodeMirror.fromTextArea(document.getElementById('mytext'));
+//myCodeMirror.setSize(screen.width*0.6, screen.height*0.2);
+
+// Execution
+var outputElement = document.getElementById('output')
+var Module = {
+  print: function(x) {
+    outputElement.textContent = (outputElement.textContent ? outputElement.textContent + '\n' : '') + x;
+  }
+};
+
+function executeLua(code, clear) {
+  if (clear) outputElement.textContent = '';
+  L.execute(code);
+}
+</script>
+
+<script src="lua.vm.js"></script>
+
+    <a href="https://github.com/kripken/lua.vm.js"><img style="position: absolute; top: 35px; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a>
+
+  </body>
+</html>
+
