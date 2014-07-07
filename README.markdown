@@ -10,7 +10,12 @@ Online demo: http://kripken.github.io/lua.vm.js/lua.vm.js.html
 Status
 ======
 
-This began as an experiment to see how fast the Lua VM can run on the web. That was successful (performance is quite good in both firefox and chrome). The project is now looking for someone to take it upon themselves that knows Lua and the Lua VM.
+This began as an experiment to see how fast the Lua VM can run on the web.
+That was successful (performance is quite good in both firefox and chrome).
+
+Next step is to iterate on the Lua <=> JS interoperability.
+Clever solutions to the lack of finalisers in Javascript are being searched for.
+ 
 
 Building
 ========
