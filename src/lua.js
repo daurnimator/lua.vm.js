@@ -210,7 +210,7 @@ Lua.Error = function (L, error_index) {
 	this.message = L.tostring(error_index);
 	// Get lua stack trace
 	L.traceback(L._L, this.message, 1);
-	this.lua_stack = L.raw_tostring(1);
+	this.lua_stack = L.raw_tostring(-1);
 	L.pop(1);
 };
 Lua.Error.prototype = new Error();
