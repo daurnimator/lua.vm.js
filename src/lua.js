@@ -102,7 +102,7 @@ var Lua = exports.Lua = {
 		// newthread
 		newuserdata:       emscripten.cwrap('lua_newuserdata',       "*",      ["*", "int"]),
 		// next
-		pcallk:            emscripten.cwrap('lua_pcallk',            "int",    ["*", "int", "int", "int", "function"]),
+		pcallk:            emscripten.cwrap('lua_pcallk',            "int",    ["*", "int", "int", "int", "int", "function"]),
 		pushboolean:       emscripten.cwrap('lua_pushboolean',       null,     ["*", "int"]),
 		pushcclosure:      emscripten.cwrap('lua_pushcclosure',      null,     ["*", "*", "int"]),
 		// pushfstring
@@ -419,6 +419,10 @@ Lua.State.prototype.isnoneornil = function(n) {
 Lua.State.prototype.getmetatable = function(n) {
 	this.getfield(Lua.defined.REGISTRYINDEX, n);
 };
+Lua.State.prototype.pcall = function(n,r,f) {
+	return this.pcallk(n, r, f, 0, null);
+};
+
 // Debugging
 Lua.State.prototype.printStack = function() {
 	for(var j=1;j<=this.gettop();j++){
@@ -560,7 +564,7 @@ Lua.Proxy.invoke = function(args, n_results) {
 	for (var i=0; i<args.length; i++) {
 		this.L.push(args[i]);
 	}
-	if (this.L.pcallk(args.length, n_results, 0, null) !== 0) {
+	if (this.L.pcall(args.length, n_results, pre+1) !== 0) {
 		var err = this.L.lua_to_js(-1);
 		this.L.settop(pre);
 		throw err;
