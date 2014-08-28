@@ -9698,7 +9698,7 @@ Lua.State.prototype.lua_to_js = function(i) {
 		case 4: // LUA_TSTRING
 			return this.raw_tostring(i);
 		case 7: // LUA_TUSERDATA
-			var box = L.testudata(i, "_PROXY_MT");
+			var box = this.testudata(i, "_PROXY_MT");
 			if (box !== /* NULL */ 0) {
 				var id = emscripten.getValue(box, "double");
 				return Lua.refs[id];
