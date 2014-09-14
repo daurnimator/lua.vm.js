@@ -31,15 +31,18 @@ do -- Create js.ipairs and js.pairs functions. attach as __pairs and __ipairs on
 	_PROXY_MT.__pairs = js.pairs
 end
 
+-- Set up require paths to be sensible for the browser
 local function load_lua_over_http(url)
 	local xhr = js.new(window.XMLHttpRequest)
 	xhr:open("GET", url, false) -- Synchronous
-	xhr:send()
-	if xhr.status == 200 then
-		return load(xhr.responseText, url)
-	else
+	-- Need to pcall xhr:send(), as it can throw a NetworkError if CORS fails
+	local ok, err = pcall(xhr.send, xhr)
+	if not ok then
+		return nil, tostring(err)
+	elseif xhr.status ~= 200 then
 		return nil, "HTTP GET " .. xhr.statusText .. ": " .. url
 	end
+	return load(xhr.responseText, url)
 end
 package.path = ""
 package.cpath = ""
