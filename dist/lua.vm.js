@@ -9664,7 +9664,16 @@ Lua.State.prototype.pcall = function(n,r,f) {
 Lua.State.prototype.printStack = function() {
 	for(var j=1;j<=this.gettop();j++){
 		var t = this.type(j);
-		console.log(j, this.typename(t), t==7?this.touserdata(j):null);
+		console.log(j, this.typename(t), (function(t){switch(t){
+			case Lua.defines.T.NUMBER:
+				return this.tonumber(j);
+			case Lua.defines.T.STRING:
+				return this.raw_tostring(j);
+			case Lua.defines.T.USERDATA:
+				return this.touserdata(j);
+			default:
+				return;
+		}}).call(this, t));
 	}
 };
 // Add handy wrappers to make for idiomatic js
