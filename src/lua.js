@@ -422,6 +422,9 @@ Lua.State.prototype.getmetatable = function(n) {
 Lua.State.prototype.pcall = function(n,r,f) {
 	return this.pcallk(n, r, f, 0, null);
 };
+Lua.State.prototype.tonumber = function(n) {
+	return this.tonumberx(n, null);
+};
 
 // Debugging
 Lua.State.prototype.printStack = function() {
