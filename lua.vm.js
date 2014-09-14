@@ -9654,7 +9654,7 @@ Lua.State.prototype.isnoneornil = function(n) {
 	return this.type(n) <= 0;
 };
 Lua.State.prototype.getmetatable = function(n) {
-	this.getfield(Lua.defined.REGISTRYINDEX, n);
+	this.getfield(Lua.defines.REGISTRYINDEX, n);
 };
 Lua.State.prototype.pcall = function(n,r,f) {
 	return this.pcallk(n, r, f, 0, null);
