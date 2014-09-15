@@ -144,7 +144,7 @@ var Lua = exports.Lua = {
 		tolstring:         emscripten.cwrap('lua_tolstring',         "number", ["number", "number", "number"]),
 		tonumberx:         emscripten.cwrap('lua_tonumberx',         "number", ["number", "number", "number"]),
 		// topointer
-		// tothread
+		tothread:          emscripten.cwrap('lua_tothread',          "number", ["number", "number"]),
 		// tounsignedx
 		touserdata:        emscripten.cwrap('lua_touserdata',        "number", ["number", "number"]),
 		type:              emscripten.cwrap('lua_type',              "number", ["number", "number"]),
@@ -509,6 +509,13 @@ Lua.State.prototype.pushjs = function(ob) {
 	this.settable(-3);
 	this.pop(1); // pop "wrapped"
 };
+// Get main lua_State of given thread
+var getmain = function(L) {
+	L.rawgeti(Lua.defines.REGISTRYINDEX, Lua.defines.RIDX_MAINTHREAD);
+	var _L = L.tothread(-1);
+	L.pop(1);
+	return _L;
+}
 Lua.State.prototype.push = function(ob) {
 	switch (typeof ob) {
 		case "boolean":
@@ -520,7 +527,7 @@ Lua.State.prototype.push = function(ob) {
 		case "undefined":
 			return this.pushnil();
 		default:
-			if (typeof ob === "function" && ob.L && ob.L._L === this._L) { // Is Lua.Proxy object for this state
+			if (typeof ob === "function" && ob.L instanceof Lua.State && ob.L._L === getmain(this)) { // Is Lua.Proxy object for this state
 				return ob.push();
 			}
 			return this.pushjs(ob);
@@ -550,9 +557,15 @@ Lua.Proxy = function (L, i) {
 		args.splice(0, 0, this);
 		return self.invoke(args, 1)[0];
 	}
-	self.L = L;
+
+	// Use the main stack for calling
+	var _L = getmain(L);
+	self.L = (L._L == _L)?L:new Lua.State(_L);
+
+	// Push the given index (luaL_ref pops it)
 	L.pushvalue(i);
 	self.ref = L.ref(Lua.defines.REGISTRYINDEX);
+
 	// Add methods
 	self.invoke   = Lua.Proxy.invoke;
 	self.push     = Lua.Proxy.push;
