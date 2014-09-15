@@ -621,7 +621,7 @@ Lua.Proxy.set = function(key, value) {
 Lua.init = function() {
 	// Create arbitraily "primary" lua state
 	var L = exports.L = new Lua.State();
-	L.execute({{{ JS_LUA }}});
+	L.execute("dofile'js.lua'");
 	if (typeof window === 'object') {
 		// Run script tags on page
 		var onload = window.onload;
