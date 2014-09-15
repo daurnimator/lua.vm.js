@@ -111,6 +111,7 @@ emscripten: ../../src/lua.js ../../src/js.lua
 			-s NO_EXIT_RUNTIME=1 \
 			-s TOTAL_MEMORY=134217728 \
 			-s RESERVED_FUNCTION_POINTERS=8 \
+			-s FORCE_ALIGNED_MEMORY=1 \
 			--memory-init-file 0 \
 			--post-js ../../src/lua.js \
 			--embed-file ../../src/js.lua@js.lua \
