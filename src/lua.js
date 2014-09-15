@@ -1,4 +1,4 @@
-(function(exports, global, emscripten){
+!(function(exports, global, emscripten){
 /* Utility functions */
 var slice = [].slice;
 var apply = (function(){}).apply;
