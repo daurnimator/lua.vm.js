@@ -106,7 +106,15 @@ emscripten: ../../src/lua.js ../../src/js.lua
 		CC="$(shell em-config EMCC)" \
 		AR="$(shell em-config EMAR) rcu" \
 		RANLIB="$(shell em-config EMRANLIB)" \
-		SYSLDFLAGS="-Os -s INVOKE_RUN=0 -s NO_EXIT_RUNTIME=1 -s TOTAL_MEMORY=134217728 -s RESERVED_FUNCTION_POINTERS=8 --memory-init-file 0 --post-js ../../src/lua.js --embed-file ../../src/js.lua@js.lua"
+		SYSLDFLAGS="-Os \
+			-s INVOKE_RUN=0 \
+			-s NO_EXIT_RUNTIME=1 \
+			-s TOTAL_MEMORY=134217728 \
+			-s RESERVED_FUNCTION_POINTERS=8 \
+			--memory-init-file 0 \
+			--post-js ../../src/lua.js \
+			--embed-file ../../src/js.lua@js.lua \
+			"
 
 freebsd:
 	$(MAKE) $(ALL) SYSCFLAGS="-DLUA_USE_LINUX" SYSLIBS="-Wl,-E -lreadline"
