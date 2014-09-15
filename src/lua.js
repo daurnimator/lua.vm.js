@@ -66,20 +66,20 @@ var Lua = exports.Lua = {
 		// arith
 		// atpanic
 		// callk
-		checkstack:        emscripten.cwrap('lua_checkstack',        null,     ["*", "int"]),
+		checkstack:        emscripten.cwrap('lua_checkstack',        null,     ["number", "number"]),
 		// close
 		// compare
 		// concat
 		// copy
-		createtable:       emscripten.cwrap('lua_createtable',       null,     ["*", "int", "int"]),
+		createtable:       emscripten.cwrap('lua_createtable',       null,     ["number", "number", "number"]),
 		// dump
-		error:             emscripten.cwrap('lua_error',             "int",    ["*"]),
+		error:             emscripten.cwrap('lua_error',             "number", ["number"]),
 		// execute
-		gc:                emscripten.cwrap('lua_gc',                "int",    ["*", "int", "int"]),
+		gc:                emscripten.cwrap('lua_gc',                "number", ["number", "number", "number"]),
 		// getallocf
 		// getctx
-		getfield:          emscripten.cwrap('lua_getfield',          null,     ["*", "int", "string"]),
-		getglobal:         emscripten.cwrap('lua_getglobal',         null,     ["*", "string"]),
+		getfield:          emscripten.cwrap('lua_getfield',          null,     ["number", "number", "string"]),
+		getglobal:         emscripten.cwrap('lua_getglobal',         null,     ["number", "string"]),
 		// gethook
 		// gethookcount
 		// gethookmask
@@ -87,8 +87,8 @@ var Lua = exports.Lua = {
 		// getlocal
 		// getmetatable
 		// getstack
-		gettable:          emscripten.cwrap('lua_gettable',          null,     ["*", "int"]),
-		gettop:            emscripten.cwrap('lua_gettop',            "int",    ["*"]),
+		gettable:          emscripten.cwrap('lua_gettable',          null,     ["number", "number"]),
+		gettop:            emscripten.cwrap('lua_gettop',            "number", ["number"]),
 		// getupvalue
 		// getuservalue
 		// insert
@@ -100,55 +100,55 @@ var Lua = exports.Lua = {
 		// load
 		// newstate
 		// newthread
-		newuserdata:       emscripten.cwrap('lua_newuserdata',       "*",      ["*", "int"]),
+		newuserdata:       emscripten.cwrap('lua_newuserdata',       "number", ["number", "number"]),
 		// next
-		pcallk:            emscripten.cwrap('lua_pcallk',            "int",    ["*", "int", "int", "int", "int", "function"]),
-		pushboolean:       emscripten.cwrap('lua_pushboolean',       null,     ["*", "int"]),
-		pushcclosure:      emscripten.cwrap('lua_pushcclosure',      null,     ["*", "*", "int"]),
+		pcallk:            emscripten.cwrap('lua_pcallk',            "number", ["number", "number", "number", "number", "number", "number"]),
+		pushboolean:       emscripten.cwrap('lua_pushboolean',       null,     ["number", "number"]),
+		pushcclosure:      emscripten.cwrap('lua_pushcclosure',      null,     ["number", "number", "number"]),
 		// pushfstring
 		// pushinteger
-		pushlightuserdata: emscripten.cwrap('lua_pushlightuserdata', null,     ["*", "*"]),
-		pushlstring:       emscripten.cwrap('lua_pushlstring',       null,     ["*", "array", "int"]),
-		pushnil:           emscripten.cwrap('lua_pushnil',           null,     ["*"]),
-		pushnumber:        emscripten.cwrap('lua_pushnumber',        null,     ["*", "double"]),
+		pushlightuserdata: emscripten.cwrap('lua_pushlightuserdata', null,     ["number", "number"]),
+		pushlstring:       emscripten.cwrap('lua_pushlstring',       null,     ["number", "array", "number"]),
+		pushnil:           emscripten.cwrap('lua_pushnil',           null,     ["number"]),
+		pushnumber:        emscripten.cwrap('lua_pushnumber',        null,     ["number", "number"]),
 		// pushstring
 		// pushthread
 		// pushunsigned
-		pushvalue:         emscripten.cwrap('lua_pushvalue',         null,     ["*", "int"]),
+		pushvalue:         emscripten.cwrap('lua_pushvalue',         null,     ["number", "number"]),
 		// pushvfstring
 		// rawequal
 		// rawget
-		rawgeti:           emscripten.cwrap('lua_rawgeti',           null,     ["*", "int", "int"]),
+		rawgeti:           emscripten.cwrap('lua_rawgeti',           null,     ["number", "number", "number"]),
 		// rawgetp
 		// rawlen
 		// rawset
 		// rawseti
 		// rawsetp
-		remove:            emscripten.cwrap('lua_remove',            null,     ["*", "int"]),
+		remove:            emscripten.cwrap('lua_remove',            null,     ["number", "number"]),
 		// replace
 		// resume
 		// setallocf
-		setfield:          emscripten.cwrap('lua_setfield',          null,     ["*", "int", "string"]),
-		setglobal:         emscripten.cwrap('lua_setglobal',         null,     ["*", "string"]),
+		setfield:          emscripten.cwrap('lua_setfield',          null,     ["number", "number", "string"]),
+		setglobal:         emscripten.cwrap('lua_setglobal',         null,     ["number", "string"]),
 		// sethook
 		// setlocal
-		setmetatable:      emscripten.cwrap('lua_setmetatable',      null,     ["*", "int"]),
-		settable:          emscripten.cwrap('lua_settable',          null,     ["*", "int"]),
-		settop:            emscripten.cwrap('lua_settop',            null,     ["*", "int"]),
+		setmetatable:      emscripten.cwrap('lua_setmetatable',      null,     ["number", "number"]),
+		settable:          emscripten.cwrap('lua_settable',          null,     ["number", "number"]),
+		settop:            emscripten.cwrap('lua_settop',            null,     ["number", "number"]),
 		// setupvalue
 		// setuservalue
 		// status
-		toboolean:         emscripten.cwrap('lua_toboolean',         "int",    ["*", "int"]),
+		toboolean:         emscripten.cwrap('lua_toboolean',         "number", ["number", "number"]),
 		// tocfunction
 		// tointegerx
-		tolstring:         emscripten.cwrap('lua_tolstring',         "char*",  ["*", "int", "int*"]),
-		tonumberx:         emscripten.cwrap('lua_tonumberx',         "double", ["*", "int", "int*"]),
+		tolstring:         emscripten.cwrap('lua_tolstring',         "number", ["number", "number", "number"]),
+		tonumberx:         emscripten.cwrap('lua_tonumberx',         "number", ["number", "number", "number"]),
 		// topointer
 		// tothread
 		// tounsignedx
-		touserdata:        emscripten.cwrap('lua_touserdata',        "*",      ["*", "int"]),
-		type:              emscripten.cwrap('lua_type',              "int",    ["*", "int"]),
-		typename:          emscripten.cwrap('lua_typename',          "string", ["*", "int"]),
+		touserdata:        emscripten.cwrap('lua_touserdata',        "number", ["number", "number"]),
+		type:              emscripten.cwrap('lua_type',              "number", ["number", "number"]),
+		typename:          emscripten.cwrap('lua_typename',          "string", ["number", "number"]),
 		// upvalueid
 		// upvaluejoin
 		// version
@@ -170,7 +170,7 @@ var Lua = exports.Lua = {
 		// checkoption
 		// checkstack
 		// checktype
-		checkudata:        emscripten.cwrap('luaL_checkudata',       "*",      ["*", "int", "string"]),
+		checkudata:        emscripten.cwrap('luaL_checkudata',       "number", ["number", "number", "string"]),
 		// checkunsigned
 		// error
 		// execresult
@@ -179,12 +179,12 @@ var Lua = exports.Lua = {
 		// getsubtable
 		// gsub
 		// len
-		loadbufferx:       emscripten.cwrap('luaL_loadbufferx',      "int",    ["*", "array", "int", "string", "string"]),
+		loadbufferx:       emscripten.cwrap('luaL_loadbufferx',      "number", ["number", "array", "number", "string", "string"]),
 		// loadfilex
 		// loadstring
-		newmetatable:      emscripten.cwrap('luaL_newmetatable',     "int",    ["*", "string"]),
-		newstate:          emscripten.cwrap('luaL_newstate',         "*",      []),
-		openlibs:          emscripten.cwrap('luaL_openlibs',         null,     ["*"]),
+		newmetatable:      emscripten.cwrap('luaL_newmetatable',     "number", ["number", "string"]),
+		newstate:          emscripten.cwrap('luaL_newstate',         "number", []),
+		openlibs:          emscripten.cwrap('luaL_openlibs',         null,     ["number"]),
 		// optinteger
 		// optlstring
 		// optnumber
@@ -192,14 +192,14 @@ var Lua = exports.Lua = {
 		// prepbuffsize
 		// pushresult
 		// pushresultsize
-		ref:               emscripten.cwrap('luaL_ref',              "int",    ["*", "int"]),
+		ref:               emscripten.cwrap('luaL_ref',              "number", ["number", "number"]),
 		// requiref
 		// setfuncs
-		setmetatable:      emscripten.cwrap('luaL_setmetatable',     null,     ["*", "string"]),
-		testudata:         emscripten.cwrap('luaL_testudata',        "*",      ["*", "int", "string"]),
-		tolstring:         emscripten.cwrap('luaL_tolstring',        "char*",  ["*", "int", "int*"]),
-		traceback:         emscripten.cwrap('luaL_traceback',        null,     ["*", "*", "string", "int"]),
-		unref:             emscripten.cwrap('luaL_unref',            "char*",  ["*", "int", "int*"]),
+		setmetatable:      emscripten.cwrap('luaL_setmetatable',     null,     ["number", "string"]),
+		testudata:         emscripten.cwrap('luaL_testudata',        "number", ["number", "number", "string"]),
+		tolstring:         emscripten.cwrap('luaL_tolstring',        "number", ["number", "number", "number"]),
+		traceback:         emscripten.cwrap('luaL_traceback',        null,     ["number", "number", "string", "number"]),
+		unref:             emscripten.cwrap('luaL_unref',            "number", ["number", "number", "number"]),
 		// where
 	},
 	refs: [],
