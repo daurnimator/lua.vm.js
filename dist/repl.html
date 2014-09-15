@@ -120,8 +120,16 @@ var Module = {
 };
 
 function executeLua(code, clear) {
-  if (clear) outputElement.textContent = '';
-  L.execute(code);
+  if (clear) {
+    outputElement.style.color = null;
+    outputElement.textContent = '';
+  }
+  try {
+    L.execute(code);
+  } catch(e) {
+    outputElement.style.color = "red";
+    outputElement.textContent = e.toString();
+  }
 }
 </script>
 
