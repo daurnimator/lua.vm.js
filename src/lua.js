@@ -74,7 +74,6 @@ var Lua = exports.Lua = {
 		createtable:       emscripten.cwrap('lua_createtable',       null,     ["number", "number", "number"]),
 		// dump
 		error:             emscripten.cwrap('lua_error',             "number", ["number"]),
-		// execute
 		gc:                emscripten.cwrap('lua_gc',                "number", ["number", "number", "number"]),
 		// getallocf
 		// getctx
