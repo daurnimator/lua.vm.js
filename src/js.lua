@@ -15,10 +15,6 @@ do -- Create js.ipairs and js.pairs functions. attach as __pairs and __ipairs on
 	end
 	_PROXY_MT.__ipairs = js.ipairs
 
-	local function js_next(collection, last)
-		if i >= collection.length then return nil end
-		return i, collection[i]
-	end
 	function js.pairs(ob)
 		local keys = js.global.Object:getOwnPropertyNames(ob) -- Should this be Object.keys?
 		local i = 0
