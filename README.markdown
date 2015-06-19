@@ -23,6 +23,18 @@ Building
 To build, run `make emscripten` in the `lua` subdirectory
 
 
+Usage from NodeJS
+=================
+
+    $ npm install lua.vm.js
+
+And inside your script:
+
+    var LuaVM = require('lua.vm.js');
+
+    var l = new LuaVM.Lua.State();
+    l.execute('print("Hello, world")');
+
 License
 =======
 

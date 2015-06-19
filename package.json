@@ -1,0 +1,23 @@
+{
+  "name": "lua.vm.js",
+  "version": "1.0.0",
+  "description": "The Lua VM, on the Web",
+  "main": "dist/lua.vm.js",
+  "scripts": {
+    "test": "node -e 'f=require(\"fs\").readFileSync(\"src/hello.lua\",\"utf8\"); m=new require(\"./dist/lua.vm.js\"); l=new m.Lua.State(); l.execute(f)'"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kripken/lua.vm.js.git"
+  },
+  "keywords": [
+    "lua",
+    "emscripten"
+  ],
+  "author": "Alon Zakai",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/kripken/lua.vm.js/issues"
+  },
+  "homepage": "http://kripken.github.io/lua.vm.js/lua.vm.js.html"
+}
