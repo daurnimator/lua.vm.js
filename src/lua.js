@@ -529,6 +529,10 @@ Lua.State.prototype.push = function(ob) {
 			if (typeof ob === "function" && ob.L instanceof Lua.State && ob.L._L === getmain(this)) { // Is Lua.Proxy object for this state
 				return ob.push();
 			}
+			/* convert Classes of the primitive objects to primitives */
+			if (typeof ob === "object" && (ob instanceof Boolean || ob instanceof Number || ob instanceof String)) {
+				return this.push(ob.valueOf());
+			}
 			return this.pushjs(ob);
 	}
 };
