@@ -583,7 +583,7 @@ Lua.Proxy.free = function() {
 	this.ref = Lua.defines.NOREF;
 };
 Lua.Proxy.invoke = function(args, n_results) {
-	if (this.L.checkstack(1+1+arguments.length)===0) throw "Out of stack space";
+	if (this.L.checkstack(1+1+args.length)===0) throw "Out of stack space";
 	if ((n_results === void 0) || (n_results === null)) {
 		n_results = Lua.defines.MULTRET;
 	}
