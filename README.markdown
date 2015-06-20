@@ -15,7 +15,7 @@ That was successful (performance is quite good in both firefox and chrome).
 
 Next step is to iterate on the Lua <=> JS interoperability.
 Clever solutions to the lack of finalisers in Javascript are being searched for.
- 
+
 
 Building
 ========
@@ -34,6 +34,7 @@ And inside your script:
 
     var l = new LuaVM.Lua.State();
     l.execute('print("Hello, world")');
+
 
 License
 =======
