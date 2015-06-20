@@ -613,7 +613,7 @@ Lua.Proxy.invoke = function(args, n_results) {
 Lua.Proxy.toString = function() {
 	this.push();
 	var s = this.L.tostring(-1);
-	this.L.pop(2);
+	this.L.pop(2); // Pop self + tostring result
 	return s;
 };
 Lua.Proxy.get = function(key) {
@@ -621,7 +621,7 @@ Lua.Proxy.get = function(key) {
 	this.L.push(key);
 	this.L.gettable(-2);
 	var res = this.L.lua_to_js(-1);
-	this.L.pop(2); // Pop table + result
+	this.L.pop(2); // Pop self + result
 	return res;
 };
 Lua.Proxy.set = function(key, value) {
@@ -629,9 +629,8 @@ Lua.Proxy.set = function(key, value) {
 	this.L.push(key);
 	this.L.push(value);
 	this.L.settable(-3);
-	var res = this.L.lua_to_js(-1);
-	this.L.pop(2); // Pop table + result
-	return res;
+	this.L.pop(1); // Pop self
+	return;
 };
 
 Lua.init = function() {
