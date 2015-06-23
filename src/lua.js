@@ -552,6 +552,19 @@ Lua.State.prototype.execute = function(code) {
 };
 
 Lua.Proxy = function (L, i) {
+	// Use the main stack for calling
+	var _L = getmain(L);
+	if (L._L != _L) {
+		L = new Lua.State(_L);
+	}
+
+	// Push the given index (luaL_ref pops it)
+	L.pushvalue(i);
+	var ref = L.ref(Lua.defines.REGISTRYINDEX);
+
+	return Lua.Proxy.create(L, ref);
+};
+Lua.Proxy.create = function(L, ref) {
 	// We want the proxy to be callable as a normal JS function
 	// This means we have to attach other methods to the function manually
 	// and return only the first return result
@@ -562,13 +575,8 @@ Lua.Proxy = function (L, i) {
 		return self.invoke(args, 1)[0];
 	}
 
-	// Use the main stack for calling
-	var _L = getmain(L);
-	self.L = (L._L == _L)?L:new Lua.State(_L);
-
-	// Push the given index (luaL_ref pops it)
-	L.pushvalue(i);
-	self.ref = L.ref(Lua.defines.REGISTRYINDEX);
+	self.L = L;
+	self.ref = ref;
 
 	// Add methods
 	self.invoke   = Lua.Proxy.invoke;
