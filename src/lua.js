@@ -387,6 +387,7 @@ Lua.State = function (_L) {
 
 		this.gc(Lua.defines.GC.RESTART, 0);
 	}
+	this._G = Lua.Proxy.create(this, Lua.defines.RIDX_GLOBALS);
 };
 // Add all C functions as methods on a Lua_State object.
 // Auxiliary library takes precedence
