@@ -556,6 +556,7 @@ Lua.Proxy = function (L, i) {
 	// This means we have to attach other methods to the function manually
 	// and return only the first return result
 	function self() {
+		"use strict"; /* if a function isn't strict, you can't pass null as 'this' */
 		var args = slice.call(arguments, 0);
 		args.splice(0, 0, this);
 		return self.invoke(args, 1)[0];
