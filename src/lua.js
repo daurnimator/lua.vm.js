@@ -553,15 +553,16 @@ Lua.State.prototype.execute = function(code) {
 };
 
 Lua.Proxy = function (L, i) {
+	// Push the given index (luaL_ref pops it)
+	// Need to use the passed stack, as that's where `i` is.
+	L.pushvalue(i);
+	var ref = L.ref(Lua.defines.REGISTRYINDEX);
+
 	// Use the main stack for calling
 	var _L = getmain(L);
 	if (L._L != _L) {
 		L = new Lua.State(_L);
 	}
-
-	// Push the given index (luaL_ref pops it)
-	L.pushvalue(i);
-	var ref = L.ref(Lua.defines.REGISTRYINDEX);
 
 	return Lua.Proxy.create(L, ref);
 };
