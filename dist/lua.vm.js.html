@@ -94,7 +94,7 @@
         <div class="span">
           <h3>FAQ</h3>
           <h4>Are you really porting the entire Lua VM?</h4>
-          <p>Yes: The entire Lua 5.2.3 codebase written in C is compiled to JavaScript here, including a full incremental GC and everything else.
+          <p>Yes: The entire Lua 5.2.4 codebase written in C is compiled to JavaScript here, including a full incremental GC and everything else.
              It fits in 170K of gzipped JavaScript.</p>
           <h4>How can a VM running in a VM be fast?</h4>
           <p>Lua is implemented in portable C. It is possible to run C compiled to JavaScript at speeds
@@ -110,7 +110,7 @@
           <p>As one datapoint, on a 64-bit Linux machine I get 732 for Firefox Nightly and 454 for Chrome Dev (as of Jan 6, 2014).</p>
           <p>Comparing individual results to a native build of Lua, in Firefox the Lua VM runs at 64% of the speed of the native build.</p>
           <p>If you want to compare the results to a native build on your machine, you can do so as follows:
-             Grab <a href="http://www.lua.org/download.html">Lua 5.2.3</a> (the version compiled here to JavaScript), build it natively,
+             Grab <a href="http://www.lua.org/download.html">Lua 5.2.4</a> (the version compiled here to JavaScript), build it natively,
              and run the same benchmarks (<a href="binarytrees.lua">binarytrees</a>, <a href="scimark.lua">scimark</a>). To run them,
              execute <code>lua scimark.lua</code> and <code>lua binarytrees.lua 14.72</code> (don't forget the second argument in binarytrees).</p>
           <h4>What about <a href="http://luajit.org/">LuaJIT</a>?</h4>
