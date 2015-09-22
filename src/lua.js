@@ -303,68 +303,132 @@ Lua.cfuncs = {
 		return 1;
 	}),
     __add: emscripten.Runtime.addFunction(function(L){
-	L = new Lua.State(L);
-		var box = L.checkudata(1, "_PROXY_MT");
-		var id = emscripten.getValue(box, "double");
-		var ob = Lua.refs[id];
-		var k = L.lua_to_js(2);
+	    L = new Lua.State(L);
+	    var box,k,id,ob,res;
+	    var type = L.testudata(1,"_PROXY_MT");
+	    if (type !== 0) {
+		box = L.checkudata(1, "_PROXY_MT");
+		k = L.lua_to_js(2);
+		id = emscripten.getValue(box, "double");
+		ob = Lua.refs[id];
 		try {
-		    var res = ob.__add(k);
+		    res = ob.__add(k);
 		} catch (e) {
-			L.push(e);
-			L.error();
-			throw "Unreachable";
+		    L.push(e);
+		    L.error();
+		    throw "Unreachable";
 		}
-		L.push(res);
-		return 1;
+	    } else {
+		box = L.checkudata(2, "_PROXY_MT");
+		k = L.lua_to_js(1);
+		id = emscripten.getValue(box, "double");
+		ob = Lua.refs[id];
+		try {
+		    var res = ob.constructor.prototype.__add(k,ob);
+		} catch (e) {
+		    L.push(e);
+		    L.error();
+		    throw "Unreachable";
+		}
+	    }
+	    L.push(res);
+	    return 1;
 	}),
     __sub: emscripten.Runtime.addFunction(function(L){
-	L = new Lua.State(L);
-		var box = L.checkudata(1, "_PROXY_MT");
-		var id = emscripten.getValue(box, "double");
-		var ob = Lua.refs[id];
-		var k = L.lua_to_js(2);
+	    L = new Lua.State(L);
+	    var box,k,id,ob,res;
+	    var type = L.testudata(1,"_PROXY_MT");
+	    if (type !== 0) {
+		box = L.checkudata(1, "_PROXY_MT");
+		k = L.lua_to_js(2);
+		id = emscripten.getValue(box, "double");
+		ob = Lua.refs[id];
 		try {
-		    var res = ob.__sub(k);
+		    res = ob.__sub(k);
 		} catch (e) {
-			L.push(e);
-			L.error();
-			throw "Unreachable";
+		    L.push(e);
+		    L.error();
+		    throw "Unreachable";
 		}
-		L.push(res);
-		return 1;
+	    } else {
+		box = L.checkudata(2, "_PROXY_MT");
+		k = L.lua_to_js(1);
+		id = emscripten.getValue(box, "double");
+		ob = Lua.refs[id];
+		try {
+		    var res = ob.constructor.prototype.__sub(k,ob);
+		} catch (e) {
+		    L.push(e);
+		    L.error();
+		    throw "Unreachable";
+		}
+	    }
+	    L.push(res);
+	    return 1;
     }),
         __mul: emscripten.Runtime.addFunction(function(L){
-	L = new Lua.State(L);
-		var box = L.checkudata(1, "_PROXY_MT");
-		var id = emscripten.getValue(box, "double");
-		var ob = Lua.refs[id];
-		var k = L.lua_to_js(2);
+	    L = new Lua.State(L);
+	    var box,k,id,ob,res;
+	    var type = L.testudata(1,"_PROXY_MT");
+	    if (type !== 0) {
+		box = L.checkudata(1, "_PROXY_MT");
+		k = L.lua_to_js(2);
+		id = emscripten.getValue(box, "double");
+		ob = Lua.refs[id];
 		try {
-		    var res = ob.__mul(k);
+		    res = ob.__mul(k);
 		} catch (e) {
-			L.push(e);
-			L.error();
-			throw "Unreachable";
+		    L.push(e);
+		    L.error();
+		    throw "Unreachable";
 		}
-		L.push(res);
-		return 1;
+	    } else {
+		box = L.checkudata(2, "_PROXY_MT");
+		k = L.lua_to_js(1);
+		id = emscripten.getValue(box, "double");
+		ob = Lua.refs[id];
+		try {
+		    var res = ob.constructor.prototype.__mul(k,ob);
+		} catch (e) {
+		    L.push(e);
+		    L.error();
+		    throw "Unreachable";
+		}
+	    }
+	    L.push(res);
+	    return 1;
 	}),
     __div: emscripten.Runtime.addFunction(function(L){
-	L = new Lua.State(L);
-		var box = L.checkudata(1, "_PROXY_MT");
-		var id = emscripten.getValue(box, "double");
-		var ob = Lua.refs[id];
-		var k = L.lua_to_js(2);
+	    L = new Lua.State(L);
+	    var box,k,id,ob,res;
+	    var type = L.testudata(1,"_PROXY_MT");
+	    if (type !== 0) {
+		box = L.checkudata(1, "_PROXY_MT");
+		k = L.lua_to_js(2);
+		id = emscripten.getValue(box, "double");
+		ob = Lua.refs[id];
 		try {
-		    var res = ob.__div(k);
+		    res = ob.__div(k);
 		} catch (e) {
-			L.push(e);
-			L.error();
-			throw "Unreachable";
+		    L.push(e);
+		    L.error();
+		    throw "Unreachable";
 		}
-		L.push(res);
-		return 1;
+	    } else {
+		box = L.checkudata(2, "_PROXY_MT");
+		k = L.lua_to_js(1);
+		id = emscripten.getValue(box, "double");
+		ob = Lua.refs[id];
+		try {
+		    var res = ob.constructor.prototype.__div(k,ob);
+		} catch (e) {
+		    L.push(e);
+		    L.error();
+		    throw "Unreachable";
+		}
+	    }
+	    L.push(res);
+	    return 1;
 	}),
     __unm: emscripten.Runtime.addFunction(function(L){
 	L = new Lua.State(L);
