@@ -302,6 +302,230 @@ Lua.cfuncs = {
 		L.pushstring(ob===null?"null":ob.toString());
 		return 1;
 	}),
+    __add: emscripten.Runtime.addFunction(function(L){
+	    L = new Lua.State(L);
+	    var box,k,id,ob,res;
+	    var type = L.testudata(1,"_PROXY_MT");
+	    if (type !== 0) {
+		box = L.checkudata(1, "_PROXY_MT");
+		k = L.lua_to_js(2);
+		id = emscripten.getValue(box, "double");
+		ob = Lua.refs[id];
+		try {
+		    res = ob.__add(k);
+		} catch (e) {
+		    L.push(e);
+		    L.error();
+		    throw "Unreachable";
+		}
+	    } else {
+		box = L.checkudata(2, "_PROXY_MT");
+		k = L.lua_to_js(1);
+		id = emscripten.getValue(box, "double");
+		ob = Lua.refs[id];
+		try {
+		    var res = ob.constructor.prototype.__add(k,ob);
+		} catch (e) {
+		    L.push(e);
+		    L.error();
+		    throw "Unreachable";
+		}
+	    }
+	    L.push(res);
+	    return 1;
+	}),
+    __sub: emscripten.Runtime.addFunction(function(L){
+	    L = new Lua.State(L);
+	    var box,k,id,ob,res;
+	    var type = L.testudata(1,"_PROXY_MT");
+	    if (type !== 0) {
+		box = L.checkudata(1, "_PROXY_MT");
+		k = L.lua_to_js(2);
+		id = emscripten.getValue(box, "double");
+		ob = Lua.refs[id];
+		try {
+		    res = ob.__sub(k);
+		} catch (e) {
+		    L.push(e);
+		    L.error();
+		    throw "Unreachable";
+		}
+	    } else {
+		box = L.checkudata(2, "_PROXY_MT");
+		k = L.lua_to_js(1);
+		id = emscripten.getValue(box, "double");
+		ob = Lua.refs[id];
+		try {
+		    var res = ob.constructor.prototype.__sub(k,ob);
+		} catch (e) {
+		    L.push(e);
+		    L.error();
+		    throw "Unreachable";
+		}
+	    }
+	    L.push(res);
+	    return 1;
+    }),
+        __mul: emscripten.Runtime.addFunction(function(L){
+	    L = new Lua.State(L);
+	    var box,k,id,ob,res;
+	    var type = L.testudata(1,"_PROXY_MT");
+	    if (type !== 0) {
+		box = L.checkudata(1, "_PROXY_MT");
+		k = L.lua_to_js(2);
+		id = emscripten.getValue(box, "double");
+		ob = Lua.refs[id];
+		try {
+		    res = ob.__mul(k);
+		} catch (e) {
+		    L.push(e);
+		    L.error();
+		    throw "Unreachable";
+		}
+	    } else {
+		box = L.checkudata(2, "_PROXY_MT");
+		k = L.lua_to_js(1);
+		id = emscripten.getValue(box, "double");
+		ob = Lua.refs[id];
+		try {
+		    var res = ob.constructor.prototype.__mul(k,ob);
+		} catch (e) {
+		    L.push(e);
+		    L.error();
+		    throw "Unreachable";
+		}
+	    }
+	    L.push(res);
+	    return 1;
+	}),
+    __div: emscripten.Runtime.addFunction(function(L){
+	    L = new Lua.State(L);
+	    var box,k,id,ob,res;
+	    var type = L.testudata(1,"_PROXY_MT");
+	    if (type !== 0) {
+		box = L.checkudata(1, "_PROXY_MT");
+		k = L.lua_to_js(2);
+		id = emscripten.getValue(box, "double");
+		ob = Lua.refs[id];
+		try {
+		    res = ob.__div(k);
+		} catch (e) {
+		    L.push(e);
+		    L.error();
+		    throw "Unreachable";
+		}
+	    } else {
+		box = L.checkudata(2, "_PROXY_MT");
+		k = L.lua_to_js(1);
+		id = emscripten.getValue(box, "double");
+		ob = Lua.refs[id];
+		try {
+		    var res = ob.constructor.prototype.__div(k,ob);
+		} catch (e) {
+		    L.push(e);
+		    L.error();
+		    throw "Unreachable";
+		}
+	    }
+	    L.push(res);
+	    return 1;
+	}),
+    __unm: emscripten.Runtime.addFunction(function(L){
+	L = new Lua.State(L);
+		var box = L.checkudata(1, "_PROXY_MT");
+		var id = emscripten.getValue(box, "double");
+		var ob = Lua.refs[id];
+		try {
+		    var res = ob.__unm();
+		} catch (e) {
+			L.push(e);
+			L.error();
+			throw "Unreachable";
+		}
+		L.push(res);
+		return 1;
+	}),
+    __pow: emscripten.Runtime.addFunction(function(L){
+	L = new Lua.State(L);
+		var box = L.checkudata(1, "_PROXY_MT");
+		var id = emscripten.getValue(box, "double");
+		var ob = Lua.refs[id];
+		var k = L.lua_to_js(2);
+		try {
+		    var res = ob.__pow(k);
+		} catch (e) {
+			L.push(e);
+			L.error();
+			throw "Unreachable";
+		}
+		L.push(res);
+		return 1;
+	}),
+    __concat: emscripten.Runtime.addFunction(function(L){
+	L = new Lua.State(L);
+		var box = L.checkudata(1, "_PROXY_MT");
+		var id = emscripten.getValue(box, "double");
+		var ob = Lua.refs[id];
+		var k = L.lua_to_js(2);
+		try {
+		    var res = ob.__concat(k);
+		} catch (e) {
+			L.push(e);
+			L.error();
+			throw "Unreachable";
+		}
+		L.push(res);
+		return 1;
+	}),
+    __le: emscripten.Runtime.addFunction(function(L){
+	L = new Lua.State(L);
+		var box = L.checkudata(1, "_PROXY_MT");
+		var id = emscripten.getValue(box, "double");
+		var ob = Lua.refs[id];
+		var k = L.lua_to_js(2);
+		try {
+		    var res = ob.__le(k);
+		} catch (e) {
+			L.push(e);
+			L.error();
+			throw "Unreachable";
+		}
+		L.push(res);
+		return 1;
+	}),
+    __lt: emscripten.Runtime.addFunction(function(L){
+	L = new Lua.State(L);
+		var box = L.checkudata(1, "_PROXY_MT");
+		var id = emscripten.getValue(box, "double");
+		var ob = Lua.refs[id];
+		var k = L.lua_to_js(2);
+		try {
+		    var res = ob.__lt(k);
+		} catch (e) {
+			L.push(e);
+			L.error();
+			throw "Unreachable";
+		}
+		L.push(res);
+		return 1;
+	}),
+    __eq: emscripten.Runtime.addFunction(function(L){
+	L = new Lua.State(L);
+		var box = L.checkudata(1, "_PROXY_MT");
+		var id = emscripten.getValue(box, "double");
+		var ob = Lua.refs[id];
+		var k = L.lua_to_js(2);
+		try {
+		    var res = ob.__eq(k);
+		} catch (e) {
+			L.push(e);
+			L.error();
+			throw "Unreachable";
+		}
+		L.push(res);
+		return 1;
+	}),
+
 	"new": emscripten.Runtime.addFunction(function(L){
 		L = new Lua.State(L);
 		var box = L.checkudata(1, "_PROXY_MT");
@@ -364,6 +588,26 @@ Lua.State = function (_L) {
 		this.setfield(-2, "__len");
 		this.pushcclosure(Lua.cfuncs.__tostring, 0);
 		this.setfield(-2, "__tostring");
+		this.pushcclosure(Lua.cfuncs.__add, 0);
+		this.setfield(-2, "__add");
+		this.pushcclosure(Lua.cfuncs.__sub, 0);
+		this.setfield(-2, "__sub");
+		this.pushcclosure(Lua.cfuncs.__mul, 0);
+		this.setfield(-2, "__mul");
+		this.pushcclosure(Lua.cfuncs.__div, 0);
+		this.setfield(-2, "__div");
+		this.pushcclosure(Lua.cfuncs.__unm, 0);
+		this.setfield(-2, "__unm");
+		this.pushcclosure(Lua.cfuncs.__pow, 0);
+		this.setfield(-2, "__pow");
+		this.pushcclosure(Lua.cfuncs.__concat, 0);
+		this.setfield(-2, "__concat");
+		this.pushcclosure(Lua.cfuncs.__le, 0);
+		this.setfield(-2, "__le");
+		this.pushcclosure(Lua.cfuncs.__lt, 0);
+		this.setfield(-2, "__lt");
+		this.pushcclosure(Lua.cfuncs.__eq, 0);
+		this.setfield(-2, "__eq");
 		this.pop(1);
 
 		// Set up weakly valued table for holding userdata
