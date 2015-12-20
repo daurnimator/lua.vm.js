@@ -549,7 +549,11 @@ Lua.State.prototype.load = function(code, name, mode) {
 Lua.State.prototype.execute = function(code) {
 	var proxy = this.load(code);
 	var args = slice.call(arguments, 1);
-	return proxy.invoke(args);
+	try {
+		return proxy.invoke(args);
+	} finally {
+		proxy.free();
+	}
 };
 
 Lua.Proxy = function (L, i) {
