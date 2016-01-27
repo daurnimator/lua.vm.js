@@ -370,7 +370,7 @@ Lua.State = function (_L) {
 		// This level of indirection ensures equal js objects are equal
 		this.createtable(0, 0);
 		this.createtable(0, 1);
-		this.pushstring("v");
+		this.pushstring("kv");
 		this.setfield(-2, "__mode");
 		Lua.lib.setmetatable(this._L, -2);
 		this.setfield(Lua.defines.REGISTRYINDEX, "wrapped");
