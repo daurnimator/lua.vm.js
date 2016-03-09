@@ -669,6 +669,6 @@ Lua.executeScripts = function(L) {
 if (!emscripten.noInitialRun) Lua.init();
 
 return Lua;
-})(typeof module !== 'undefined' ? module.exports : this,
+})(exports,
 	ENVIRONMENT_IS_NODE ? global : this,
 	Module);
