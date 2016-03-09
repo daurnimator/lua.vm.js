@@ -63,7 +63,7 @@ $(LUA_A): $(BASE_O)
 $(LUA_JS): $(LUA_A)
 	$(CC) -o $@ $(LDFLAGS) $(LUA_A) $(LIBS)
 	sed -i -e '1i!(function(exports){var module;' $@
-	echo "})(typeof module !== 'undefined'?module.exports:this);" >> $@
+	echo ";exports['emscripten'] = Module;})(typeof module !== 'undefined'?module.exports:this);" >> $@
 
 $(LUA_T): $(LUA_O) $(LUA_A)
 	$(CC) -o $@ $(LDFLAGS) $(LUA_O) $(LUA_A) $(LIBS)

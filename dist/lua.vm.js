@@ -18,4 +18,4 @@ var hb=[Ko,Ko,Kn,Ko,Ln,Ko,Mn,Ko,Nn,Ko,On,Ko,Pn,Ko,Qn,Ko,Rn,Ko,jl,ml,nl,ol,Yl,kh,
 
 
 
-})(typeof module !== 'undefined'?module.exports:this);
+;exports['emscripten'] = Module;})(typeof module !== 'undefined'?module.exports:this);
