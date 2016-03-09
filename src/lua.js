@@ -652,7 +652,7 @@ Lua.init = function() {
 	// Create arbitraily "primary" lua state
 	var L = exports.L = new Lua.State();
 	L.execute("dofile'js.lua'");
-	if (typeof window === 'object') {
+	if (ENVIRONMENT_IS_WEB) {
 		// Run script tags on page
 		var onload = window.onload;
 		window.onload = function() {
