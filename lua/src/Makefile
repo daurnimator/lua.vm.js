@@ -101,7 +101,7 @@ ansi:
 bsd:
 	$(MAKE) $(ALL) SYSCFLAGS="-DLUA_USE_POSIX -DLUA_USE_DLOPEN" SYSLIBS="-Wl,-E"
 
-emscripten: ../../src/lua.js ../../src/js.lua
+emscripten:
 	$(MAKE) $(LUA_JS) \
 		CC="$(shell em-config EMCC)" \
 		AR="$(shell em-config EMAR) rcu" \
