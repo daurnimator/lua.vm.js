@@ -41,6 +41,6 @@ License
 
 This project is MIT/X11 licensed. Please see the COPYING file in the source package for more information.
 Copyright (c) 2013 Alon Zakai (kripken)
-Copyright (c) 2014 Daurnimator
+Copyright (c) 2014-2016 Daurnimator
 
 Lua is licensed under MIT.
