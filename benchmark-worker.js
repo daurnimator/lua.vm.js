@@ -1,31 +1,22 @@
-var Module = {
-  noInitialRun: true,
-  printBuffer: '',
-  print: function(x) {
-    Module.printBuffer += x + '\n';
-  }
-};
-
-var pre = Date.now();
-
-var Module = { print: function(x) { Module.printBuffer += x + '\n' }, printBuffer: '' };
-var console = { log: function(){} };
-
 var startup = Date.now();
 importScripts('lua.vm.js');
 startup = Date.now() - startup;
+
+emscripten.print = function(x) { this.printBuffer += x + '\n' };
+emscripten.printBuffer = '';
 
 onmessage = function(event) {
   var msg = event.data;
 
   function doIt(code) {
+    emscripten.printBuffer = '';
     var start = Date.now();
     L.execute(code);
     postMessage({
       benchmark: msg.benchmark,
       startup: startup,
       runtime: Date.now() - start,
-      output: Module.printBuffer
+      output: emscripten.printBuffer
     });
   }
 

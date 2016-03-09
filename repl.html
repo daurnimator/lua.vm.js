@@ -25,6 +25,7 @@
     <script src="js/codemirror.js"></script>
     <link rel="stylesheet" href="css/codemirror.css">
     <script src="js/lua.js"></script>
+    <script src="lua.vm.js"></script>
 
   </head>
 
@@ -113,11 +114,9 @@ var myCodeMirror = CodeMirror.fromTextArea(document.getElementById('mytext'));
 
 // Execution
 var outputElement = document.getElementById('output')
-var Module = {
-  print: function(x) {
-    outputElement.textContent = (outputElement.textContent ? outputElement.textContent + '\n' : '') + x;
-  }
-};
+emscripten.print = function(x) {
+  outputElement.textContent = (outputElement.textContent ? outputElement.textContent + '\n' : '') + x;
+}
 
 function executeLua(code, clear) {
   if (clear) {
@@ -133,7 +132,6 @@ function executeLua(code, clear) {
 }
 </script>
 
-<script src="lua.vm.js"></script>
 
     <a href="https://github.com/kripken/lua.vm.js"><img style="position: absolute; top: 35px; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a>
 
