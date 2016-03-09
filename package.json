@@ -1,6 +1,6 @@
 {
   "name": "lua.vm.js",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "The Lua VM, on the Web",
   "main": "dist/lua.vm.js",
   "scripts": {
@@ -14,7 +14,10 @@
     "lua",
     "emscripten"
   ],
-  "author": "Alon Zakai",
+  "contributors": [
+    "Alon Zakai",
+    "daurnimator <quae@daurnimator.com>"
+  ],
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/kripken/lua.vm.js/issues"
