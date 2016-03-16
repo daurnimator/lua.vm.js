@@ -299,7 +299,7 @@ Lua.cfuncs = {
 		var box = L.checkudata(1, "_PROXY_MT");
 		var id = emscripten.getValue(box, "double");
 		var ob = Lua.refs[id];
-		L.pushstring(ob===null?"null":ob.toString());
+		L.pushstring((ob!==null && ob.toString)?ob.toString():typeof ob);
 		return 1;
 	}),
 	"new": emscripten.Runtime.addFunction(function(L){
