@@ -21,7 +21,7 @@ function new_(a, b, c, d, e, f, g, h, i) {
 			// Native objects often detect this and throw;
 			// luckily there aren't many native objects that take >9 arguments; so this case is rare
 			var obj = Object.create(this.prototype);
-			var ret = this.apply(obj, arguments);
+			var ret = apply.call(this, obj, arguments);
 			return ((typeof ret === 'object' && ret !== null) || typeof ret === 'function')?ret:obj;
 	}
 }
