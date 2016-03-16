@@ -216,14 +216,14 @@ Lua.Error.prototype = new Error();
 Lua.Error.prototype.name = "Lua.Error";
 
 Lua.cfuncs = {
-	__gc: emscripten.Runtime.addFunction(function(L){
+	"__gc": emscripten.Runtime.addFunction(function(L){
 		L = new Lua.State(L);
 		var box = L.checkudata(1, "_PROXY_MT");
 		var id = emscripten.getValue(box, "double");
 		delete Lua.refs[id];
 		return 0;
 	}),
-	__index: emscripten.Runtime.addFunction(function(L){
+	"__index": emscripten.Runtime.addFunction(function(L){
 		L = new Lua.State(L);
 		var box = L.checkudata(1, "_PROXY_MT");
 		var id = emscripten.getValue(box, "double");
@@ -239,7 +239,7 @@ Lua.cfuncs = {
 		L.push(res);
 		return 1;
 	}),
-	__newindex: emscripten.Runtime.addFunction(function(L){
+	"__newindex": emscripten.Runtime.addFunction(function(L){
 		L = new Lua.State(L);
 		var box = L.checkudata(1, "_PROXY_MT");
 		var id = emscripten.getValue(box, "double");
@@ -265,7 +265,7 @@ Lua.cfuncs = {
 		}
 		return 0;
 	}),
-	__call: emscripten.Runtime.addFunction(function(L){
+	"__call": emscripten.Runtime.addFunction(function(L){
 		L = new Lua.State(L);
 		var box = L.checkudata(1, "_PROXY_MT");
 		var id = emscripten.getValue(box, "double");
@@ -286,7 +286,7 @@ Lua.cfuncs = {
 		L.push(res);
 		return 1;
 	}),
-	__len: emscripten.Runtime.addFunction(function(L){
+	"__len": emscripten.Runtime.addFunction(function(L){
 		L = new Lua.State(L);
 		var box = L.checkudata(1, "_PROXY_MT");
 		var id = emscripten.getValue(box, "double");
@@ -294,7 +294,7 @@ Lua.cfuncs = {
 		L.push(ob.length);
 		return 1;
 	}),
-	__tostring: emscripten.Runtime.addFunction(function(L){
+	"__tostring": emscripten.Runtime.addFunction(function(L){
 		L = new Lua.State(L);
 		var box = L.checkudata(1, "_PROXY_MT");
 		var id = emscripten.getValue(box, "double");
@@ -332,7 +332,7 @@ Lua.cfuncs = {
 	// 	return 1;
 	// }),
 	// Our error handler
-	traceback: emscripten.Runtime.addFunction(function(L){
+	"traceback": emscripten.Runtime.addFunction(function(L){
 		L = new Lua.State(L);
 		L.pushjs(new Lua.Error(L, 1));
 		return 1;
@@ -515,7 +515,7 @@ var getmain = function(L) {
 	var _L = L.tothread(-1);
 	L.pop(1);
 	return _L;
-}
+};
 Lua.State.prototype.push = function(ob) {
 	switch (typeof ob) {
 		case "boolean":
