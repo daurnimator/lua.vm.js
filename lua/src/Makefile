@@ -47,6 +47,13 @@ ALL_O= $(BASE_O) $(LUA_O) $(LUAC_O)
 ALL_T= $(LUA_A) $(LUA_T) $(LUAC_T)
 ALL_A= $(LUA_A)
 
+ifeq ($(shell uname -s),Darwin)
+	# brew install gnu-sed
+	SED=gsed
+else
+	SED=sed
+endif
+
 # Targets start here.
 default: $(PLAT)
 
@@ -62,7 +69,7 @@ $(LUA_A): $(BASE_O)
 
 $(LUA_JS): $(LUA_A)
 	$(CC) -o $@ $(LDFLAGS) $(LUA_A) $(LIBS)
-	sed -i -e '1i!(function(exports){var module;' $@
+	$(SED) -i -e '1i!(function(exports){var module;' $@
 	echo ";exports['emscripten'] = Module;})(typeof module !== 'undefined'?module.exports:this);" >> $@
 
 $(LUA_T): $(LUA_O) $(LUA_A)
