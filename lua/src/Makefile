@@ -61,9 +61,12 @@ $(LUA_A): $(BASE_O)
 	$(RANLIB) $@
 
 $(LUA_JS): $(LUA_A)
-	$(CC) -o $@ $(LDFLAGS) $(LUA_A) $(LIBS)
-	sed -i -e '1i!(function(exports){var module;' $@
-	echo ";exports['emscripten'] = Module;})(typeof module !== 'undefined'?module.exports:this);" >> $@
+	# tempfile needs js extension for emcc
+	$(eval TEMPFILE := $(shell mktemp -u vm-XXXXX).js)
+	$(CC) -o $(TEMPFILE) $(LDFLAGS) $(LUA_A) $(LIBS)
+	# wrap compiled js output in module
+	(echo "!(function(exports){var module;"; cat $(TEMPFILE); echo ";exports['emscripten'] = Module;})(typeof module !== 'undefined'?module.exports:this);") > $@
+	rm $(TEMPFILE)
 
 $(LUA_T): $(LUA_O) $(LUA_A)
 	$(CC) -o $@ $(LDFLAGS) $(LUA_O) $(LUA_A) $(LIBS)
