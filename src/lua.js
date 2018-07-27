@@ -532,7 +532,7 @@ Lua.State.prototype.push = function(ob) {
 			return this.pushnil();
 		default:
 			if (typeof ob === "function" && ob.L instanceof Lua.State && ob.L._L === getmain(this)) { // Is Lua.Proxy object for this state
-				return ob.push();
+				return this.rawgeti(Lua.defines.REGISTRYINDEX, ob.ref);
 			}
 			/* convert Classes of the primitive objects to primitives */
 			if (typeof ob === "object" && (ob instanceof Boolean || ob instanceof Number || ob instanceof String)) {
